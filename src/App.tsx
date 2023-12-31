@@ -3,8 +3,10 @@ import Layout from './general/components/Layout';
 import HomePage from './features/home/HomePage';
 import TestRequestPage from './features/test/TestRequestPage';
 
-import { DependencyProvider } from './general/contexts/DependencyContext';
 import StartPage from './features/train/components/StartPage';
+import ResultPage from './features/train/components/ResultPage';
+
+import { DependencyProvider } from './general/contexts/DependencyContext';
 import { AuthProvider } from './features/auth/contexts/AuthContext';
 
 import './App.css';
@@ -23,6 +25,7 @@ function App() {
                 </Route>
                 <Route path="train">
                   <Route path="start" element={<StartPage />} />
+                  <Route path="result" element={<ResultPage />} />
                 </Route>
               </Routes>
             </Router>
