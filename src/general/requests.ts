@@ -6,6 +6,7 @@ const requests = {
     devs: {
         ping: "http://localhost:3000/test/ping",
     },
+    fetchImage: (imagePath: string) => `http://localhost:3000/images/${imagePath}`,
 }
 
 export default requests;

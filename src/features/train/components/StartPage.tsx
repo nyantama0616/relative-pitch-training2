@@ -6,6 +6,7 @@ import IUser from "../../user/interfaces/IUser";
 import { useDependency } from "../../../general/contexts/DependencyContext";
 import IFetchUsers from "../../user/interfaces/IFetchUsers";
 import PageTemplate from "../../../general/components/PageTemplate";
+import { useAuth } from "../../auth/contexts/AuthContext";
 
 interface StartPageProps {
     sx?: SxProps;
@@ -26,8 +27,11 @@ export default function StartPage({ sx }: StartPageProps) {
 
 export function useStartPage() {
     const [users, setUsers] = useState<IUser[]>([]);
+    
     const { useFetchUsers } = useDependency();
     const fetchUsers: IFetchUsers = useFetchUsers();
+
+    const auth = useAuth();
 
     useEffect(() => {
         fetchUsers
@@ -41,7 +45,7 @@ export function useStartPage() {
     }, []);
 
     function onSelectUser(user: IUser) {
-        console.log(user);
+        auth.signIn(user.email, "pass");
     }
 
     return {

@@ -5,6 +5,7 @@ import TestPingPage from './features/test/TestPingPage';
 
 import { DependencyProvider } from './general/contexts/DependencyContext';
 import StartPage from './features/train/components/StartPage';
+import { AuthProvider } from './features/auth/contexts/AuthContext';
 
 import './App.css';
 
@@ -12,19 +13,21 @@ function App() {
   return (
     <div className="App">
       <DependencyProvider>
-        <Layout>
-          <Router>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/test">
-                <Route path="ping" element={<TestPingPage />} />
-              </Route>
-              <Route path="train">
-                <Route path="start" element={<StartPage />} />
-              </Route>
-            </Routes>
-          </Router>
-        </Layout>
+        <AuthProvider>
+          <Layout>
+            <Router>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/test">
+                  <Route path="ping" element={<TestPingPage />} />
+                </Route>
+                <Route path="train">
+                  <Route path="start" element={<StartPage />} />
+                </Route>
+              </Routes>
+            </Router>
+          </Layout>
+        </AuthProvider>
       </DependencyProvider>
     </div>
   );

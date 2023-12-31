@@ -7,7 +7,7 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
     return (
         <Box className="layout" sx={{ width: "100%", height: "100%", background: "#cccccc", display: "flex", flexDirection: "column" }} >
-            <Header height="60px" />
+            <Header height="80px" />
             <Box className="main" sx={{ width: "100%", height: "100%", background: "#cccccc", display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <Grid container justifyContent="center" alignItems="center">
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12} >
