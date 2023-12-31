@@ -10,8 +10,9 @@ interface HomePageProps {
 export default function TestPingPage({ sx }: HomePageProps) {
     const { useRequestManager } = useDependency();
     const requestManager = useRequestManager();
-    const { useFetchUsers } = useDependency();
+    const { useFetchUsers, useSignIn } = useDependency();
     const fetchUsers = useFetchUsers();
+    const signIn = useSignIn();
     
     function _ping() {
         requestManager
@@ -35,6 +36,17 @@ export default function TestPingPage({ sx }: HomePageProps) {
             });
     }
 
+    function _signIn() {
+        signIn
+            .signIn("test@example.com", "pass")
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     return (
         <PageTemplate className="test-ping-page" sx={sx}>
             <Box>
@@ -44,6 +56,10 @@ export default function TestPingPage({ sx }: HomePageProps) {
             <Box>
                 <h1>Fetch Users</h1>
                 <Button variant="contained" onClick={_fetchUsers}>Submit</Button>
+            </Box>
+            <Box>
+                <h1>Sign In</h1>
+                <Button variant="contained" onClick={_signIn}>Submit</Button>
             </Box>
         </PageTemplate>
     )
