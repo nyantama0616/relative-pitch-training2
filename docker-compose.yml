@@ -1,0 +1,23 @@
+version: "3"
+services:
+  front:
+    build: .
+    environment:
+      - NODE_ENV=development
+      - PORT=8000
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - 8000:8000
+    networks:
+      - relative-pitch-training2-network
+    tty: true
+    command: sh -c 'npm start'
+
+volumes:
+  bundle-volume:
+  db-data:
+
+networks:
+  relative-pitch-training2-network:
+    external: true
