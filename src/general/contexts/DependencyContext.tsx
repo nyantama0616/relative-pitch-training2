@@ -1,13 +1,16 @@
 
 import { createContext, useContext } from 'react';
 import useRequestManager from '../hooks/useRequestManager';
+import useFetchUsers from '../../features/user/hooks/useFetchUsers';
 
 interface DependencyContextType {
     useRequestManager: typeof useRequestManager,
+    useFetchUsers: typeof useFetchUsers,
 }
 
 const initialValue: DependencyContextType = {
-    useRequestManager,
+    useRequestManager: null!,
+    useFetchUsers: null!,
 }
 
 const DependencyContext = createContext<DependencyContextType>(initialValue);
@@ -22,6 +25,7 @@ interface DependencyProviderProps {
 export function DependencyProvider({ children }: DependencyProviderProps) {
     const value: DependencyContextType = {
         useRequestManager,
+        useFetchUsers,
     }
 
     return (

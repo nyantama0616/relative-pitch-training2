@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { SxProps } from "@mui/system";
 import PageTemplate from "../../general/components/PageTemplate";
 import { useDependency } from "../../general/contexts/DependencyContext";
@@ -10,8 +10,10 @@ interface HomePageProps {
 export default function TestPingPage({ sx }: HomePageProps) {
     const { useRequestManager } = useDependency();
     const requestManager = useRequestManager();
+    const { useFetchUsers } = useDependency();
+    const fetchUsers = useFetchUsers();
     
-    function _handleClick() {
+    function _ping() {
         requestManager
             .get(requests.devs.ping)
             .then((res) => {
@@ -22,10 +24,27 @@ export default function TestPingPage({ sx }: HomePageProps) {
             });
     }
 
+    function _fetchUsers() {
+        fetchUsers
+            .fetch()
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     return (
         <PageTemplate className="test-ping-page" sx={sx}>
-            <h1>Ping Test</h1>
-            <Button variant="contained" onClick={_handleClick}>Submit</Button>
+            <Box>
+                <h1>Ping</h1>
+                <Button variant="contained" onClick={_ping}>Submit</Button>
+            </Box>
+            <Box>
+                <h1>Fetch Users</h1>
+                <Button variant="contained" onClick={_fetchUsers}>Submit</Button>
+            </Box>
         </PageTemplate>
     )
 }
