@@ -2,7 +2,7 @@
 import { createContext, useContext } from 'react';
 import useRequestManager from '../hooks/useRequestManager';
 import useFetchUsers from '../../features/user/hooks/useFetchUsers';
-import useSignIn from '../../features/hooks/useSignIn';
+import useSignIn from '../../features/auth/hooks/useSignIn';
 
 interface DependencyContextType {
     useRequestManager: typeof useRequestManager,

@@ -1,4 +1,4 @@
-import IUser from "../user/interfaces/IUser";
+import IUser from "../../user/interfaces/IUser";
 
 export type SignInResponse = {
     user: IUser;

@@ -1,4 +1,4 @@
-import BasicStatus from "../../general/types/BasicStatus";
+import BasicStatus from "../../../general/types/BasicStatus";
 import SignInResponse from "../types/SignInResponse";
 
 export default interface ISignIn {

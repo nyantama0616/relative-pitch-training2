@@ -1,6 +1,6 @@
 import ISignIn from "../interfaces/ISignIn";
-import { useDependency } from "../../general/contexts/DependencyContext";
-import requests from "../../general/requests";
+import { useDependency } from "../../../general/contexts/DependencyContext";
+import requests from "../../../general/requests";
 import SignInRequest from "../types/SignInRequest";
 import SignInResponse from "../types/SignInResponse";
 

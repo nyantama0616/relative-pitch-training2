@@ -7,7 +7,7 @@ import requests from "../../general/requests";
 interface HomePageProps {
     sx?: SxProps;
 }
-export default function TestPingPage({ sx }: HomePageProps) {
+export default function TestRequestPage({ sx }: HomePageProps) {
     const { useRequestManager } = useDependency();
     const requestManager = useRequestManager();
     const { useFetchUsers, useSignIn } = useDependency();

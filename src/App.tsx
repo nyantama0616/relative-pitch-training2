@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './general/components/Layout';
 import HomePage from './features/home/HomePage';
-import TestPingPage from './features/test/TestPingPage';
+import TestRequestPage from './features/test/TestRequestPage';
 
 import { DependencyProvider } from './general/contexts/DependencyContext';
 import StartPage from './features/train/components/StartPage';
@@ -19,7 +19,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/test">
-                  <Route path="ping" element={<TestPingPage />} />
+                  <Route path="ping" element={<TestRequestPage />} />
                 </Route>
                 <Route path="train">
                   <Route path="start" element={<StartPage />} />
