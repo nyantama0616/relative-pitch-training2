@@ -19,7 +19,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/test">
-                  <Route path="ping" element={<TestRequestPage />} />
+                  <Route path="request" element={<TestRequestPage />} />
                 </Route>
                 <Route path="train">
                   <Route path="start" element={<StartPage />} />

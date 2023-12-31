@@ -10,9 +10,10 @@ interface HomePageProps {
 export default function TestRequestPage({ sx }: HomePageProps) {
     const { useRequestManager } = useDependency();
     const requestManager = useRequestManager();
-    const { useFetchUsers, useSignIn } = useDependency();
+    const { useFetchUsers, useSignIn, useFetchIntervalRates } = useDependency();
     const fetchUsers = useFetchUsers();
     const signIn = useSignIn();
+    const fetchIntervalRates = useFetchIntervalRates();
     
     function _ping() {
         requestManager
@@ -47,6 +48,17 @@ export default function TestRequestPage({ sx }: HomePageProps) {
             });
     }
 
+    function _fetchIntervalRates() {
+        fetchIntervalRates
+            .fetch(1)
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     return (
         <PageTemplate className="test-ping-page" sx={sx}>
             <Box>
@@ -60,6 +72,10 @@ export default function TestRequestPage({ sx }: HomePageProps) {
             <Box>
                 <h1>Sign In</h1>
                 <Button variant="contained" onClick={_signIn}>Submit</Button>
+            </Box>
+            <Box>
+                <h1>Fetch Interval Rates</h1>
+                <Button variant="contained" onClick={_fetchIntervalRates}>Submit</Button>
             </Box>
         </PageTemplate>
     )
