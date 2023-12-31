@@ -4,6 +4,7 @@ import HomePage from './features/home/HomePage';
 import TestPingPage from './features/test/TestPingPage';
 
 import { DependencyProvider } from './general/contexts/DependencyContext';
+import StartPage from './features/train/components/StartPage';
 
 import './App.css';
 
@@ -17,6 +18,9 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/test">
                 <Route path="ping" element={<TestPingPage />} />
+              </Route>
+              <Route path="train">
+                <Route path="start" element={<StartPage />} />
               </Route>
             </Routes>
           </Router>
