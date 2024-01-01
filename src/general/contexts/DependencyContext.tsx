@@ -6,6 +6,7 @@ import useSignIn from '../../features/auth/hooks/useSignIn';
 import useFetchIntervalRates from '../../features/train/hooks/useFetchIntervalRates';
 import useKeyPressManager from '../hooks/useKeyPressManager';
 import useMidiIOWithKeyPress from '../../features/sounds/hooks/useMidiIOWithKeyPress';
+import useSoundPlayerWithTone from '../../features/sounds/hooks/useSoundPlayerWithTone';
 
 interface DependencyContextType {
     useRequestManager: typeof useRequestManager,
@@ -14,6 +15,7 @@ interface DependencyContextType {
     useFetchIntervalRates: typeof useFetchIntervalRates,
     useKeyPressManager: typeof useKeyPressManager,
     useMidiIOWithKeyPress: typeof useMidiIOWithKeyPress,
+    useSoundPlayerWithTone: typeof useSoundPlayerWithTone,
 }
 
 const initialValue: DependencyContextType = {
@@ -23,6 +25,7 @@ const initialValue: DependencyContextType = {
     useFetchIntervalRates: null!,
     useKeyPressManager: null!,
     useMidiIOWithKeyPress: null!,
+    useSoundPlayerWithTone: null!,
 }
 
 const DependencyContext = createContext<DependencyContextType>(initialValue);
@@ -42,6 +45,7 @@ export function DependencyProvider({ children }: DependencyProviderProps) {
         useFetchIntervalRates,
         useKeyPressManager,
         useMidiIOWithKeyPress,
+        useSoundPlayerWithTone,
     }
 
     return (

@@ -2,8 +2,9 @@ import { Box } from "@mui/material";
 import PageTemplate from "../../general/components/PageTemplate";
 import IKeyPressManager from "../../general/interfaces/IKeyPressManager";
 import { useDependency } from "../../general/contexts/DependencyContext";
+import { useEffect } from "react";
 
-export default function TestMidiIOPage() {
+export default function TestSoundPage() {
     const { useKeyPressManager } = useDependency();
     const keyPressManager = useKeyPressManager();
 
@@ -15,7 +16,7 @@ export default function TestMidiIOPage() {
                 onKeyDown={e => keyPressManager.handleKeyDown(e)}
                 onKeyUp={e => keyPressManager.handleKeyUp(e)}
             >
-                <TestMidiIOWithKeyPress keyPressManager={keyPressManager} />
+                <Main keyPressManager={keyPressManager} />
             </Box>
         </PageTemplate>
     );
@@ -24,15 +25,23 @@ export default function TestMidiIOPage() {
 interface MainProps {
     keyPressManager: IKeyPressManager
 }
-function TestMidiIOWithKeyPress({ keyPressManager }: MainProps) {
-    const { useMidiIOWithKeyPress } = useDependency();
-    const midiIOWithKeyPress = useMidiIOWithKeyPress(keyPressManager);
+function Main({ keyPressManager }: MainProps) {
+    const { useMidiIOWithKeyPress, useSoundPlayerWithTone } = useDependency();
+    const midiIO = useMidiIOWithKeyPress(keyPressManager);
+    const soundPlayer = useSoundPlayerWithTone();
+
+    useEffect(() => {
+        if (midiIO.inputMessage?.type === "On") {
+            console.log("play!", midiIO.inputMessage.note);
+            soundPlayer.playNote(midiIO.inputMessage.note, 500);
+        }
+    }, [midiIO.inputMessage]);
 
     return (
         <Box>
             <h2>Input Message</h2>
-            <p>type: {midiIOWithKeyPress.inputMessage?.type}</p>
-            <p>note: {midiIOWithKeyPress.inputMessage?.note}</p>
+            <p>type: {midiIO.inputMessage?.type}</p>
+            <p>note: {midiIO.inputMessage?.note}</p>
         </Box>
     );
 
