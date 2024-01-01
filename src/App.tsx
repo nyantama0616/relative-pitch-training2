@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './general/components/Layout';
 import HomePage from './features/home/HomePage';
+
 import TestRequestPage from './features/test/TestRequestPage';
+import TestKeyPressPage from './features/test/TestKeyPressPage';
 
 import StartPage from './features/train/components/StartPage';
 import ResultPage from './features/train/components/ResultPage';
@@ -22,6 +24,7 @@ function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/test">
                   <Route path="request" element={<TestRequestPage />} />
+                  <Route path="key-press" element={<TestKeyPressPage />} />
                 </Route>
                 <Route path="train">
                   <Route path="start" element={<StartPage />} />
