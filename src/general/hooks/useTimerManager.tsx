@@ -1,10 +1,11 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import ITimerManager from "../interfaces/ITimerManager";
 
 const INTERVAL = 33; // 30 fps
 
 export default function useTimerManager(): ITimerManager {
-    const passedTimeRef = useRef<number>(0);
+    const [passedTime, setPassedTime] = useState<number>(0);
+    const frameCount = useMemo(() => Math.floor(passedTime / INTERVAL), [passedTime]);
     const [isRunning, setIsRunning] = useState<boolean>(false);
 
     const intervalRef = useRef<NodeJS.Timer | null>(null);
@@ -17,11 +18,10 @@ export default function useTimerManager(): ITimerManager {
         if (intervalRef.current) {
             console.warn('Timer is already running.');
             stop();
-            return;
         }
 
         intervalRef.current = setInterval(() => {
-            passedTimeRef.current += INTERVAL;
+            setPassedTime(prev => prev + INTERVAL);
         }, INTERVAL);
         
         setIsRunning(true);
@@ -38,13 +38,14 @@ export default function useTimerManager(): ITimerManager {
 
     function reset() {
         stop();
-        passedTimeRef.current = 0;
+        setPassedTime(0);
     }
 
     return {
-        passedTime: passedTimeRef.current,
+        passedTime,
         isRunning,
         INTERVAL,
+        frameCount,
         start,
         stop,
         reset,
