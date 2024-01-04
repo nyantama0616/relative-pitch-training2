@@ -8,6 +8,7 @@ import useKeyPressManager from '../hooks/useKeyPressManager';
 import useMidiIOWithKeyPress from '../../features/sounds/hooks/useMidiIOWithKeyPress';
 import useSoundPlayerWithTone from '../../features/sounds/hooks/useSoundPlayerWithTone';
 import useTimerManager from '../hooks/useTimerManager';
+import useTrainManager from '../../features/train/hooks/useTrainManager';
 
 interface DependencyContextType {
     useRequestManager: typeof useRequestManager,
@@ -18,6 +19,7 @@ interface DependencyContextType {
     useMidiIOWithKeyPress: typeof useMidiIOWithKeyPress,
     useSoundPlayerWithTone: typeof useSoundPlayerWithTone,
     useTimerManager: typeof useTimerManager,
+    useTrainManager: typeof useTrainManager,
 }
 
 const initialValue: DependencyContextType = {
@@ -29,6 +31,7 @@ const initialValue: DependencyContextType = {
     useMidiIOWithKeyPress: null!,
     useSoundPlayerWithTone: null!,
     useTimerManager: null!,
+    useTrainManager: null!,
 }
 
 const DependencyContext = createContext<DependencyContextType>(initialValue);
@@ -50,6 +53,7 @@ export function DependencyProvider({ children }: DependencyProviderProps) {
         useMidiIOWithKeyPress,
         useSoundPlayerWithTone,
         useTimerManager,
+        useTrainManager,
     }
 
     return (

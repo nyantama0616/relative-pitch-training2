@@ -6,6 +6,7 @@ import TestRequestPage from './features/test/TestRequestPage';
 import TestKeyPressPage from './features/test/TestKeyPressPage';
 import TestMidiIOPage from './features/test/TestMidiIOPage';
 import TestTimerPage from './features/test/TestTimerPage';
+import TestTrainManager from './features/test/TestTrainManager';
 
 import StartPage from './features/train/components/StartPage';
 import ResultPage from './features/train/components/ResultPage';
@@ -29,6 +30,7 @@ function App() {
                   <Route path="key-press" element={<TestKeyPressPage />} />
                   <Route path="midi-io" element={<TestMidiIOPage />} />
                   <Route path="timer" element={<TestTimerPage />} />
+                  <Route path="train" element={<TestTrainManager />} />
                 </Route>
                 <Route path="train">
                   <Route path="start" element={<StartPage />} />
