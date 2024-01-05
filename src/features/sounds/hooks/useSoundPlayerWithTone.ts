@@ -54,6 +54,11 @@ export default function useSoundPlayerWithTone(): ISoundPlayer {
 
     //TODO: 音が死ぬことがあるから要修正！！(多分noteがundefinedになってるから。soundPlayer悪くない)
     function playNote(note: Note, duration: number) {
+        if (note === undefined) {
+            console.error("note is undefined.");
+            return;
+        }
+
         if (!synthRef.current?.loaded) {
             console.log("not loaded.");
             return;
