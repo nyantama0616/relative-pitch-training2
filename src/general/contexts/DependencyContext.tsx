@@ -10,6 +10,9 @@ import useSoundPlayerWithTone from '../../features/sounds/hooks/useSoundPlayerWi
 import useTimerManager from '../hooks/useTimerManager';
 import useTrainManager from '../../features/train/hooks/useTrainManager';
 import useBeatManager from '../../features/train/hooks/useBeatManager';
+import useAnswerManager from '../../features/train/hooks/useAnswerManager';
+import IntervalGeneratorRandom from '../../features/train/classes/useIntervalGeneratorRandom';
+import useIntervalGeneratorRandom from '../../features/train/classes/useIntervalGeneratorRandom';
 
 interface DependencyContextType {
     useRequestManager: typeof useRequestManager,
@@ -22,6 +25,8 @@ interface DependencyContextType {
     useTimerManager: typeof useTimerManager,
     useTrainManager: typeof useTrainManager,
     useBeatManager: typeof useBeatManager,
+    useAnswerManager: typeof useAnswerManager,
+    useIntervalGenerator: typeof useIntervalGeneratorRandom,
 }
 
 const initialValue: DependencyContextType = {
@@ -35,6 +40,8 @@ const initialValue: DependencyContextType = {
     useTimerManager: null!,
     useTrainManager: null!,
     useBeatManager: null!,
+    useAnswerManager: null!,
+    useIntervalGenerator: null!,
 }
 
 const DependencyContext = createContext<DependencyContextType>(initialValue);
@@ -58,6 +65,8 @@ export function DependencyProvider({ children }: DependencyProviderProps) {
         useTimerManager,
         useTrainManager,
         useBeatManager,
+        useAnswerManager,
+        useIntervalGenerator: useIntervalGeneratorRandom,
     }
 
     return (
