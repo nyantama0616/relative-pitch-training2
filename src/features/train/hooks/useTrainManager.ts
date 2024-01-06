@@ -26,9 +26,16 @@ const mockQuestion: IQuestion = {
         ],
 };
 
-export default function useTrainManager(timer: ITimerManager): ITrainManager {
+const PRESENT_NUM_PER_NOTE = 5;
+
+interface Props {
+    timer: ITimerManager;
+    onFinished: () => void;
+}
+export default function useTrainManager({timer, onFinished}: Props): ITrainManager {
     const [currentQuestion, setCurrentQuestion] = useState<IQuestion | null>(null);
     // const [currentQuestion, setCurrentQuestion] = useState<IQuestion | null>(mockQuestion);
+    const [answeredQuestions, setAnsweredQuestions] = useState<IQuestion[]>([]);
 
     const { useBeatManager, useAnswerManager, useMidiIO, useIntervalGenerator } = useDependency();
     const beatManager = useBeatManager({
@@ -57,7 +64,7 @@ export default function useTrainManager(timer: ITimerManager): ITrainManager {
         },
     });
 
-    const intervalGenerator = useIntervalGenerator(5);
+    const intervalGenerator = useIntervalGenerator(PRESENT_NUM_PER_NOTE);
 
     function start() {
         _nextQuestion();
@@ -78,6 +85,17 @@ export default function useTrainManager(timer: ITimerManager): ITrainManager {
     }
 
     function _nextQuestion(): void {
+        if (currentQuestion) {
+            const a = [...answeredQuestions, currentQuestion!];
+            setAnsweredQuestions(a);
+    
+            if (a.length >= PRESENT_NUM_PER_NOTE * 2) { //本番は12
+                stop();
+                onFinished();
+                return;
+            }
+        }
+
         setCurrentQuestion({
             interval: intervalGenerator.generate(),
             startTime: timer.getPassedTime(),
@@ -87,6 +105,7 @@ export default function useTrainManager(timer: ITimerManager): ITrainManager {
 
     return {
         currentQuestion,
+        answeredQuestions,
         start,
         stop,
         reset,

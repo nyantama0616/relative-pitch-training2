@@ -1,12 +1,11 @@
 import PageTemplate from "../../general/components/PageTemplate";
-import { Box, Grid, Button, Paper } from "@mui/material";
+import { Box, Grid, Button, Paper, List, ListItem } from "@mui/material";
 import IQuestion from "../train/interfaces/IQuestion";
 import IKeyPush from "../train/interfaces/IKeyPush";
 
 import { SxProps } from "@mui/system";
 import { useDependency } from "../../general/contexts/DependencyContext";
 import getNoteName from "../sounds/lib/getNoteName";
-import IKeyPressManager from "../../general/interfaces/IKeyPressManager";
 import { KeyPressProvider } from "../../general/contexts/KeyPressContext";
 
 export default function TestTrainManager() {
@@ -16,18 +15,29 @@ export default function TestTrainManager() {
     return <PageTemplate>
         <h1>Test Train Manager</h1>
         <KeyPressProvider>
-            <Main keyPressManager={keyPressManager} />
+            <Main />
         </KeyPressProvider>
     </PageTemplate>
 }
 
-interface MainProps {
-    keyPressManager: IKeyPressManager
-}
-function Main({ keyPressManager }: MainProps) {
+function Main() {
     const { useTrainManager, useTimerManager, useAnswerManager } = useDependency();
     const timer = useTimerManager();
-    const trainManager = useTrainManager(timer);
+    const trainManager = useTrainManager({
+        timer,
+        onFinished: () => {
+            console.log("finished");
+        }
+    });
+
+    const answeredQuestions = trainManager.answeredQuestions.map((question, i) => {
+        return <ListItem key={i.toString()}>
+            <Box>
+                <h2>Question {i + 1}</h2>
+                <Question question={question} />
+            </Box>
+        </ListItem>
+    });
     
     return (
         <Grid container spacing={2}>
@@ -45,6 +55,17 @@ function Main({ keyPressManager }: MainProps) {
                     <Button onClick={trainManager.start} variant="contained">Start</Button>
                     <Button onClick={trainManager.stop} variant="contained">Stop</Button>
                     <Button onClick={trainManager.reset} variant="contained">Reset</Button>
+                </Box>
+            </Grid>
+
+            <Grid item xs={12}>
+                <Box sx={{
+                    height: "800px",
+                    overflow: "scroll",
+                }}>
+                    <List>
+                        {answeredQuestions}
+                    </List>
                 </Box>
             </Grid>
         </Grid>
