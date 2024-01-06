@@ -1,4 +1,4 @@
-import ITrainManager from "../interfaces/ITrainManager";
+import ITrainManager, { Score } from "../interfaces/ITrainManager";
 import { useDependency } from "../../../general/contexts/DependencyContext";
 import { useEffect, useState } from "react";
 import IQuestion from "../interfaces/IQuestion";
@@ -27,14 +27,27 @@ const mockQuestion: IQuestion = {
         ],
 };
 
-const PRESENT_NUM_PER_NOTE = 2;
+const PRESENT_NUM_PER_NOTE = 5;
+
+interface State {
+    isAnswerable: boolean;
+    prevScore: Score | null;
+}
+
+const initialState: State = {
+    isAnswerable: false,
+    prevScore: null,
+};
 
 interface Props {
     timer: ITimerManager;
     onFinished: (questions: IQuestion[]) => void;
 }
-export default function useTrainManager({timer, onFinished}: Props): ITrainManager {
+export default function useTrainManager({ timer, onFinished }: Props): ITrainManager {
+    // const [isAnswerable, setIsAnswerable] = useState<boolean>(false);
+    const [state, setState] = useState<State>(initialState);
     const [currentQuestion, setCurrentQuestion] = useState<IQuestion | null>(null);
+    
     // const [currentQuestion, setCurrentQuestion] = useState<IQuestion | null>(mockQuestion);
     const [answeredQuestions, setAnsweredQuestions] = useState<IQuestion[]>([]);
 
@@ -47,25 +60,54 @@ export default function useTrainManager({timer, onFinished}: Props): ITrainManag
     const midiIO = useMidiIO();
     const answerManager = useAnswerManager({
         midiIO,
-        isAnswerable: true,
+        isAnswerable: state.isAnswerable,
         currentInterval: currentQuestion?.interval || null,
         onRight: (note: Note) => {
+            console.log("right");
             _pushKey(note);
+            setState(prev => {
+                return {
+                    prevScore: {
+                        interval: currentQuestion!.interval,
+                        startTime: currentQuestion!.startTime,
+                        endTime: timer.getPassedTime(),
+                    },
+                    isAnswerable: false,
+                }
+            });
         },
         onWrong: (note: Note) => {
             _pushKey(note);
         },
     });
 
+    //確実にkeyPushesが更新されるようにするため
     useEffect(() => {
         if (currentQuestion === null || currentQuestion!.keyPushes.length === 0) return;
 
         const lastKey = currentQuestion!.keyPushes[currentQuestion!.keyPushes.length - 1].note;
         if (lastKey === currentQuestion!.interval.note1) {
-            console.log("right");
             _nextQuestion();
         }
     }, [currentQuestion]);
+
+    useEffect(() => {
+        if (beatManager.beatCount % 4 === 1) {
+            setState(prev => {
+                return {
+                    ...prev,
+                    isAnswerable: true,
+                }
+            });
+
+            setCurrentQuestion(prev => {
+                return {
+                    ...prev!,
+                    startTime: timer.getPassedTime(),
+                }   
+            });
+        }
+    }, [beatManager.beatCount]);
 
     const intervalGenerator = useIntervalGenerator(PRESENT_NUM_PER_NOTE);
 
@@ -111,14 +153,17 @@ export default function useTrainManager({timer, onFinished}: Props): ITrainManag
 
         setCurrentQuestion({
             interval: intervalGenerator.generate(),
-            startTime: timer.getPassedTime(),
+            // startTime: timer.getPassedTime(),
+            startTime: -1, //TODO: ここでは-1にしておく, けど後でちゃんと書こう
             keyPushes: [],
-        });
+        });  
     }
 
     return {
         currentQuestion,
         answeredQuestions,
+        isAnswerable: state.isAnswerable,
+        prevScore: state.prevScore,        
         start,
         stop,
         reset,

@@ -10,6 +10,7 @@ const PLAY_NOTE_INTERVAL = 500;
 interface State {
     isRunning: boolean;
     tempo: number;
+    beatCount: number;
 }
 
 interface Props {
@@ -25,6 +26,7 @@ export default function useBeatManager({ timer, currentInterval }: Props): IBeat
     const [state, setState] = useState<State>({
         isRunning: false,
         tempo: 100, //現状使わない
+        beatCount: 0,
     });
 
     // callback内でcurrentIntervalが更新されない問題へ対処するためにrefを使う
@@ -51,6 +53,14 @@ export default function useBeatManager({ timer, currentInterval }: Props): IBeat
             } else if (beat === 1) {
                 soundPlayer.playNote(interval!.note1, PLAY_NOTE_INTERVAL);
             }
+
+            //beatCountをインクリメント
+            setState(prev => {
+                return {
+                    ...prev,
+                    beatCount: prev.beatCount + 1,
+                }
+            });
         });
     }
 
@@ -67,6 +77,7 @@ export default function useBeatManager({ timer, currentInterval }: Props): IBeat
     }
 
     return {
+        beatCount: state.beatCount,
         start,
         stop,
     }

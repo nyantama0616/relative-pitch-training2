@@ -4,19 +4,20 @@ import { SxProps } from "@mui/system";
 import { useEffect, useRef, useState } from "react";
 
 interface DurationBarProps {
+    duration: number | null,
     startTime: number,
     getPassedTime: () => number,
     border: number,
     sx?: SxProps
 }
-export default function DurationBar({ startTime, getPassedTime, border, sx }: DurationBarProps) {
-    const duration = getPassedTime() - startTime; //TODO: できればdurationを外部から渡したい
+export default function DurationBar({ duration, startTime, getPassedTime, border, sx }: DurationBarProps) {
+    const _duration = duration !== null ? duration : getPassedTime() - startTime; //TODO: できればdurationを外部から渡したい
 
-    const color = duration < border ? "rgb(4, 190, 4)" : 'rgb(249, 67, 67)';
+    const color = _duration < border ? "rgb(4, 190, 4)" : 'rgb(249, 67, 67)';
     const series = [
         {
             name: "Temperature in Fahrenheit", //will be displayed on the y-axis
-            data: [0, duration, 0]
+            data: [0, _duration, 0]
         }
     ];
     const options = {

@@ -9,6 +9,7 @@ import { useDependency } from "../../general/contexts/DependencyContext";
 import getNoteName from "../sounds/lib/getNoteName";
 import { KeyPressProvider } from "../../general/contexts/KeyPressContext";
 import { useAuth } from "../auth/contexts/AuthContext";
+import { useEffect } from "react";
 
 export default function TestTrainManager() {
     return <PageTemplate>
@@ -44,7 +45,7 @@ function Main() {
         </ListItem>
     });
 
-    const duration = trainManager.currentQuestion === null ? 0 : timer.getPassedTime() - trainManager.currentQuestion.startTime;
+    const duration = !trainManager.isAnswerable && trainManager.prevScore !== null ? trainManager.prevScore.endTime - trainManager.prevScore.startTime : null;
     
     return (
         <Grid container spacing={2}>
@@ -69,7 +70,7 @@ function Main() {
                 {
                     trainManager.currentQuestion === null
                         ? null
-                        : <DurationBar startTime={trainManager.currentQuestion.startTime} getPassedTime={timer.getPassedTime} border={1000} />
+                        : <DurationBar duration={duration} startTime={trainManager.currentQuestion.startTime} getPassedTime={timer.getPassedTime} border={2000} />
                 }
             </Grid>
 
