@@ -3,16 +3,28 @@ import ITimerManager from "../interfaces/ITimerManager";
 
 const INTERVAL = 33; // 30 fps
 
+type Callbacks = {
+    id: number,
+    callbacks: {
+        [key: number]: () => void
+    }
+}
+
 export default function useTimerManager(): ITimerManager {
-    const [passedTime, setPassedTime] = useState<number>(0);
-    const frameCount = useMemo(() => Math.floor(passedTime / INTERVAL), [passedTime]);
+    const passedTimeRef = useRef<number>(0);
     const [isRunning, setIsRunning] = useState<boolean>(false);
 
     const intervalRef = useRef<NodeJS.Timer | null>(null);
 
+    const callBacksPerFrameRef = useRef<Callbacks>({ id: 0, callbacks: {} });
+
     useEffect(() => {
         return stop;
     }, []);
+
+    function getFrameCount() {
+        return Math.floor(passedTimeRef.current / INTERVAL);
+    }
 
     function start() {
         if (intervalRef.current) {
@@ -21,7 +33,10 @@ export default function useTimerManager(): ITimerManager {
         }
 
         intervalRef.current = setInterval(() => {
-            setPassedTime(prev => prev + INTERVAL);
+            passedTimeRef.current += INTERVAL;
+            Object.values(callBacksPerFrameRef.current.callbacks).forEach(callback => {
+                callback();
+            });
         }, INTERVAL);
         
         setIsRunning(true);
@@ -38,16 +53,38 @@ export default function useTimerManager(): ITimerManager {
 
     function reset() {
         stop();
-        setPassedTime(0);
+        passedTimeRef.current = 0;
+    }
+
+    function addCallbackPerFrame(callback: () => void): number {
+        if (isRunning) {
+            console.error('You cannot add callback while timer is running.');
+            return -1;
+        }
+
+        const id = callBacksPerFrameRef.current.id++;
+        callBacksPerFrameRef.current.callbacks[id] = callback;
+        return id;
+    }
+
+    function removeCallbackPerFrame(id: number) {
+        if (isRunning) {
+            console.error('You cannot remove callback while timer is running.');
+            return;
+        }
+
+        delete callBacksPerFrameRef.current.callbacks[id];
     }
 
     return {
-        passedTime,
         isRunning,
         INTERVAL,
-        frameCount,
         start,
         stop,
         reset,
+        addCallbackPerFrame,
+        removeCallbackPerFrame,
+        getFrameCount,
+        getPassedTime: () => passedTimeRef.current,
     }
 }
