@@ -7,11 +7,9 @@ import { SxProps } from "@mui/system";
 import { useDependency } from "../../general/contexts/DependencyContext";
 import getNoteName from "../sounds/lib/getNoteName";
 import { KeyPressProvider } from "../../general/contexts/KeyPressContext";
+import { useAuth } from "../auth/contexts/AuthContext";
 
 export default function TestTrainManager() {
-    const { useKeyPressManager } = useDependency();
-    const keyPressManager = useKeyPressManager();
-
     return <PageTemplate>
         <h1>Test Train Manager</h1>
         <KeyPressProvider>
@@ -21,12 +19,18 @@ export default function TestTrainManager() {
 }
 
 function Main() {
-    const { useTrainManager, useTimerManager, useAnswerManager } = useDependency();
+    const { useTrainManager, useTimerManager, usePostTrainRecord } = useDependency();
+    const { currentUser } = useAuth();
     const timer = useTimerManager();
+    const postTrainRecord = usePostTrainRecord();
     const trainManager = useTrainManager({
         timer,
         onFinished: () => {
             console.log("finished");
+            postTrainRecord.post({
+                userId: currentUser!.id,
+                questions: trainManager.answeredQuestions,
+            })
         }
     });
 

@@ -9,6 +9,7 @@ const requests = {
     fetchImage: (imagePath: string) => `http://localhost:3000/images/${imagePath}`,
     trainRecord: {
         fetchIntervalRates: (id: number) => `http://localhost:3000/interval_rates?id=${id}`,
+        post: "http://localhost:3000/train_records",
     }
 }
 

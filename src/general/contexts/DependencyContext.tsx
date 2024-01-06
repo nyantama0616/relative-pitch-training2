@@ -13,6 +13,7 @@ import useBeatManager from '../../features/train/hooks/useBeatManager';
 import useAnswerManager from '../../features/train/hooks/useAnswerManager';
 import IntervalGeneratorRandom from '../../features/train/classes/useIntervalGeneratorRandom';
 import useIntervalGeneratorRandom from '../../features/train/classes/useIntervalGeneratorRandom';
+import usePostTrainRecord from '../../features/train/hooks/usePostTrainRecord';
 
 interface DependencyContextType {
     useRequestManager: typeof useRequestManager,
@@ -27,6 +28,7 @@ interface DependencyContextType {
     useBeatManager: typeof useBeatManager,
     useAnswerManager: typeof useAnswerManager,
     useIntervalGenerator: typeof useIntervalGeneratorRandom,
+    usePostTrainRecord: typeof usePostTrainRecord,
 }
 
 const initialValue: DependencyContextType = {
@@ -42,6 +44,7 @@ const initialValue: DependencyContextType = {
     useBeatManager: null!,
     useAnswerManager: null!,
     useIntervalGenerator: null!,
+    usePostTrainRecord: null!,
 }
 
 const DependencyContext = createContext<DependencyContextType>(initialValue);
@@ -67,6 +70,7 @@ export function DependencyProvider({ children }: DependencyProviderProps) {
         useBeatManager,
         useAnswerManager,
         useIntervalGenerator: useIntervalGeneratorRandom,
+        usePostTrainRecord,
     }
 
     return (
