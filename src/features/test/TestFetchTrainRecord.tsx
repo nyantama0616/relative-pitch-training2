@@ -11,7 +11,7 @@ export default function TestFetchTrainRecord() {
     const [trainRecord, setTrainRecord] = useState<ITrainRecord | null>(null);
 
     function _fetch() {
-        fetchTrainRecord.fetch(4).then(res => {
+        fetchTrainRecord.fetch(-1).then(res => {
             if (res) {
                 console.log(res);
                 setTrainRecord(res.record);
