@@ -6,34 +6,48 @@ import IKeyPush from "../train/interfaces/IKeyPush";
 import { SxProps } from "@mui/system";
 import { useDependency } from "../../general/contexts/DependencyContext";
 import getNoteName from "../sounds/lib/getNoteName";
+import IKeyPressManager from "../../general/interfaces/IKeyPressManager";
+import { KeyPressProvider } from "../../general/contexts/KeyPressContext";
 
 export default function TestTrainManager() {
-    const { useTrainManager, useTimerManager } = useDependency();
+    const { useKeyPressManager } = useDependency();
+    const keyPressManager = useKeyPressManager();
+
+    return <PageTemplate>
+        <h1>Test Train Manager</h1>
+        <KeyPressProvider>
+            <Main keyPressManager={keyPressManager} />
+        </KeyPressProvider>
+    </PageTemplate>
+}
+
+interface MainProps {
+    keyPressManager: IKeyPressManager
+}
+function Main({ keyPressManager }: MainProps) {
+    const { useTrainManager, useTimerManager, useAnswerManager } = useDependency();
     const timer = useTimerManager();
     const trainManager = useTrainManager(timer);
-
+    
     return (
-        <PageTemplate>
-            <h1>Test Train Manager</h1>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <h2>Current Question</h2>
-                    <Question question={trainManager.currentQuestion} />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <Box sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        gap: '1rem',
-                    }}>
-                        <Button onClick={trainManager.start} variant="contained">Start</Button>
-                        <Button onClick={trainManager.stop} variant="contained">Stop</Button>
-                        <Button onClick={trainManager.reset} variant="contained">Reset</Button>
-                    </Box>
-                </Grid>
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <h2>Current Question</h2>
+                <Question question={trainManager.currentQuestion} />
             </Grid>
-        </PageTemplate>
+
+            <Grid item xs={12}>
+                <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: '1rem',
+                }}>
+                    <Button onClick={trainManager.start} variant="contained">Start</Button>
+                    <Button onClick={trainManager.stop} variant="contained">Stop</Button>
+                    <Button onClick={trainManager.reset} variant="contained">Reset</Button>
+                </Box>
+            </Grid>
+        </Grid>
     );
 }
 
