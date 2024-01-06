@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import Note from "../enums/Note";
-import IKeyPressManager from "../../../general/interfaces/IKeyPressManager";
 import IMidiIO from "../interfaces/IMidiIO";
 import { IMidiMessage, MessageType } from "../interfaces/IMidiMessage";
+import { useKeyPress } from "../../../general/contexts/KeyPressContext";
 
-export default function useMidiIOWithKeyPress(keyPressManager: IKeyPressManager): IMidiIO {
+export default function useMidiIOWithKeyPress(): IMidiIO {
     const mockMidiDevice = "Mock MIDI Device";
     const [inputMessage, setInputMessage] = useState<IMidiMessage | null>(null);
+    const { keyDownInfo, keyUpInfo } = useKeyPress();
 
     useEffect(() => {
-        switch (keyPressManager.keyDownInfo.key) {
+        switch (keyDownInfo.key) {
             case "c":
                 setInputMessage({ type: MessageType.On, note: Note.C4 });
                 break;
@@ -32,10 +33,10 @@ export default function useMidiIOWithKeyPress(keyPressManager: IKeyPressManager)
                 setInputMessage({ type: MessageType.On, note: Note.A4 });
                 break;
         }
-    }, [keyPressManager.keyDownInfo]);
+    }, [keyDownInfo]);
     
     useEffect(() => {
-        switch (keyPressManager.keyUpInfo.key) {
+        switch (keyUpInfo.key) {
             case "c":
                 setInputMessage({ type: MessageType.Off, note: Note.C4 });
                 break;
@@ -59,7 +60,7 @@ export default function useMidiIOWithKeyPress(keyPressManager: IKeyPressManager)
                 break;
             
         }
-    }, [keyPressManager.keyUpInfo]);
+    }, [keyUpInfo]);
 
     function setInput(deviceName: string) {
         

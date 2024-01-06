@@ -1,41 +1,32 @@
 import { Box } from "@mui/material";
 import PageTemplate from "../../general/components/PageTemplate";
-import IKeyPressManager from "../../general/interfaces/IKeyPressManager";
-import { useDependency } from "../../general/contexts/DependencyContext";
+import { KeyPressProvider, useKeyPress } from "../../general/contexts/KeyPressContext";
 
 export default function TestKeyPressPage() {
-    const { useKeyPressManager } = useDependency();
-    const keyPressManager = useKeyPressManager();
-
     return (
         <PageTemplate className="test-key-press">
             <h1>Key Press Test</h1>
-            <Box
-                tabIndex={0}
-                onKeyDown={e => keyPressManager.handleKeyDown(e)}
-                onKeyUp={e => keyPressManager.handleKeyUp(e)}
-            >
-                <Main hook={keyPressManager} />
-            </Box>
+            <KeyPressProvider>
+                <Main />
+        </KeyPressProvider>
         </PageTemplate>
     );
 }
 
-interface MainProps {
-    hook: IKeyPressManager
-}
-function Main({ hook }: MainProps) {
+function Main() {
+    const { keyDownInfo, keyUpInfo } = useKeyPress();
+
     return (
         <Box>
             <h2>Key Down Info</h2>
-            <p>count: {hook.keyDownInfo.count}</p>
-            <p>key: {hook.keyDownInfo.key}</p>
+            <p>count: {keyDownInfo.count}</p>
+            <p>key: {keyDownInfo.key}</p>
 
             <br/>
 
             <h2>Key Up Info</h2>
-            <p>count: {hook.keyUpInfo.count}</p>
-            <p>key: {hook.keyUpInfo.key}</p>
+            <p>count: {keyUpInfo.count}</p>
+            <p>key: {keyUpInfo.key}</p>
         </Box>
     );
 

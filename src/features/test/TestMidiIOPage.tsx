@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
 import PageTemplate from "../../general/components/PageTemplate";
-import IKeyPressManager from "../../general/interfaces/IKeyPressManager";
 import { useDependency } from "../../general/contexts/DependencyContext";
 import { useEffect } from "react";
+import { KeyPressProvider } from "../../general/contexts/KeyPressContext";
 
 export default function TestSoundPage() {
     const { useKeyPressManager } = useDependency();
@@ -11,23 +11,16 @@ export default function TestSoundPage() {
     return (
         <PageTemplate className="test-key-press">
             <h1>MidiIO Test</h1>
-            <Box
-                tabIndex={0}
-                onKeyDown={e => keyPressManager.handleKeyDown(e)}
-                onKeyUp={e => keyPressManager.handleKeyUp(e)}
-            >
-                <Main keyPressManager={keyPressManager} />
-            </Box>
+            <KeyPressProvider>
+                <Main />
+            </KeyPressProvider>
         </PageTemplate>
     );
 }
 
-interface MainProps {
-    keyPressManager: IKeyPressManager
-}
-function Main({ keyPressManager }: MainProps) {
-    const { useMidiIOWithKeyPress, useSoundPlayerWithTone } = useDependency();
-    const midiIO = useMidiIOWithKeyPress(keyPressManager);
+function Main() {
+    const { useMidiIO, useSoundPlayerWithTone } = useDependency();
+    const midiIO = useMidiIO();
     const soundPlayer = useSoundPlayerWithTone();
 
     useEffect(() => {
