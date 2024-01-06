@@ -8,30 +8,9 @@ import { useDependency } from "../../general/contexts/DependencyContext";
 import getNoteName from "../sounds/lib/getNoteName";
 
 export default function TestTrainManager() {
-    const { useTrainManager } = useDependency();
-    const trainManager = useTrainManager();
-
-    const mockQuestion: IQuestion = {
-        interval: {
-            note0: 60,
-            note1: 64,
-        },
-        startTime: 0,
-        keyPushes: [
-            {
-                time: 0,
-                note: 60,
-            },
-            {
-                time: 500,
-                note: 64,
-            },
-            {
-                time: 700,
-                note: 84,
-            },
-        ],
-    }
+    const { useTrainManager, useTimerManager } = useDependency();
+    const timer = useTimerManager();
+    const trainManager = useTrainManager(timer);
 
     return (
         <PageTemplate>
@@ -39,8 +18,7 @@ export default function TestTrainManager() {
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <h2>Current Question</h2>
-                    {/* <Question question={trainManager.currentQuestion} /> */}
-                    <Question question={mockQuestion} />
+                    <Question question={trainManager.currentQuestion} />
                 </Grid>
 
                 <Grid item xs={12}>
