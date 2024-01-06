@@ -25,11 +25,11 @@ function Main() {
     const postTrainRecord = usePostTrainRecord();
     const trainManager = useTrainManager({
         timer,
-        onFinished: () => {
+        onFinished: (questions: IQuestion[]) => {
             console.log("finished");
             postTrainRecord.post({
                 userId: currentUser!.id,
-                questions: trainManager.answeredQuestions,
+                questions: questions,
             })
         }
     });

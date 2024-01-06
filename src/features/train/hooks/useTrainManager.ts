@@ -1,8 +1,9 @@
 import ITrainManager from "../interfaces/ITrainManager";
 import { useDependency } from "../../../general/contexts/DependencyContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import IQuestion from "../interfaces/IQuestion";
 import ITimerManager from "../../../general/interfaces/ITimerManager";
+import Note from "../../sounds/enums/Note";
 
 const mockQuestion: IQuestion = {
     interval: {
@@ -26,11 +27,11 @@ const mockQuestion: IQuestion = {
         ],
 };
 
-const PRESENT_NUM_PER_NOTE = 5;
+const PRESENT_NUM_PER_NOTE = 2;
 
 interface Props {
     timer: ITimerManager;
-    onFinished: () => void;
+    onFinished: (questions: IQuestion[]) => void;
 }
 export default function useTrainManager({timer, onFinished}: Props): ITrainManager {
     const [currentQuestion, setCurrentQuestion] = useState<IQuestion | null>(null);
@@ -48,21 +49,23 @@ export default function useTrainManager({timer, onFinished}: Props): ITrainManag
         midiIO,
         isAnswerable: true,
         currentInterval: currentQuestion?.interval || null,
-        onRight: () => {
-            console.log("right");
-            _nextQuestion();
+        onRight: (note: Note) => {
+            _pushKey(note);
         },
-        onWrong: () => {
-            console.log("wrong");
-            setCurrentQuestion({
-                ...currentQuestion!,
-                keyPushes: [...currentQuestion!.keyPushes, {
-                    time: timer.getPassedTime(),
-                    note: midiIO.inputMessage!.note,
-                }],
-            });
+        onWrong: (note: Note) => {
+            _pushKey(note);
         },
     });
+
+    useEffect(() => {
+        if (currentQuestion === null || currentQuestion!.keyPushes.length === 0) return;
+
+        const lastKey = currentQuestion!.keyPushes[currentQuestion!.keyPushes.length - 1].note;
+        if (lastKey === currentQuestion!.interval.note1) {
+            console.log("right");
+            _nextQuestion();
+        }
+    }, [currentQuestion]);
 
     const intervalGenerator = useIntervalGenerator(PRESENT_NUM_PER_NOTE);
 
@@ -84,6 +87,16 @@ export default function useTrainManager({timer, onFinished}: Props): ITrainManag
         timer.reset();
     }
 
+    function _pushKey(note: number): void {
+        setCurrentQuestion({
+            ...currentQuestion!,
+            keyPushes: [...currentQuestion!.keyPushes, {
+                time: timer.getPassedTime(),
+                note: note,
+            }],
+        });
+    }
+
     function _nextQuestion(): void {
         if (currentQuestion) {
             const a = [...answeredQuestions, currentQuestion!];
@@ -91,7 +104,7 @@ export default function useTrainManager({timer, onFinished}: Props): ITrainManag
     
             if (a.length >= PRESENT_NUM_PER_NOTE * 2) { //本番は12
                 stop();
-                onFinished();
+                onFinished(a);
                 return;
             }
         }
