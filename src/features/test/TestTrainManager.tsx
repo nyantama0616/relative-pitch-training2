@@ -2,6 +2,7 @@ import PageTemplate from "../../general/components/PageTemplate";
 import { Box, Grid, Button, Paper, List, ListItem } from "@mui/material";
 import IQuestion from "../train/interfaces/IQuestion";
 import IKeyPush from "../train/interfaces/IKeyPush";
+import DurationBar from "../train/components/DurationBar";
 
 import { SxProps } from "@mui/system";
 import { useDependency } from "../../general/contexts/DependencyContext";
@@ -42,6 +43,8 @@ function Main() {
             </Box>
         </ListItem>
     });
+
+    const duration = trainManager.currentQuestion === null ? 0 : timer.getPassedTime() - trainManager.currentQuestion.startTime;
     
     return (
         <Grid container spacing={2}>
@@ -60,6 +63,14 @@ function Main() {
                     <Button onClick={trainManager.stop} variant="contained">Stop</Button>
                     <Button onClick={trainManager.reset} variant="contained">Reset</Button>
                 </Box>
+            </Grid>
+
+            <Grid item xs={12}>
+                {
+                    trainManager.currentQuestion === null
+                        ? null
+                        : <DurationBar startTime={trainManager.currentQuestion.startTime} getPassedTime={timer.getPassedTime} border={1000} />
+                }
             </Grid>
 
             <Grid item xs={12}>
