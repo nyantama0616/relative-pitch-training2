@@ -4,6 +4,7 @@ import Note from "../../sounds/enums/Note";
 import { useEffect, useRef, useState } from "react";
 import getNoteName from "../../sounds/lib/getNoteName";
 import IInterval from "../interfaces/IInterval";
+import { useDependency } from "../../../general/contexts/DependencyContext";
 
 interface Props {
     midiIO: IMidiIO;
@@ -14,17 +15,21 @@ interface Props {
 }
 export default function useAnswerManager({ midiIO, isAnswerable, currentInterval, onRight, onWrong }: Props): IAnswerManager {
     const [isRunning, setIsRunning] = useState(false);
-
+    
     const pushedNotesRef = useRef<Set<Note>>(new Set());
+    
+    const { useSoundPlayerWithTone } = useDependency();
+    const soundPlayer = useSoundPlayerWithTone();
 
     useEffect(() => {
         if (!isRunning) return;
-        
+
         const note = midiIO.inputMessage?.note;
         if (!note) return;
         
         if (midiIO.inputMessage!.type === "On") {
             pushedNotesRef.current.add(note);
+            soundPlayer.playNote(note, 500); //TODO: 適切な長さにする
         } else {
             pushedNotesRef.current.delete(note);
         }        
