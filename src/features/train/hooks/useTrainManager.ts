@@ -35,9 +35,17 @@ interface State {
     prevScore: Score | null;
 }
 
+//TODO: ここでprevScoreをnullにすると、startSetより前にDurationBarが動く。クソグラムのせい
 const initialState: State = {
     isAnswerable: false,
-    prevScore: null,
+    prevScore: {
+        interval: {
+            note0: 60,
+            note1: 60,
+        },
+        startTime: -1,
+        endTime: -1,
+    },
 };
 
 const initialQuestion: IQuestion = {
@@ -166,7 +174,7 @@ export default function useTrainManager({ timer, onFinished }: Props): ITrainMan
     }
 
     function _endSet() {
-        console.log("endSet");
+        // console.log("endSet");
         
         setState(prev => {
             return {
