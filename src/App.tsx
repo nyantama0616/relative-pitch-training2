@@ -10,6 +10,7 @@ import TestTrainManager from './features/test/TestTrainManager';
 import TestFetchTrainRecord from './features/test/TestFetchTrainRecord';
 
 import StartPage from './features/train/components/StartPage';
+import MainPage from './features/train/components/MainPage';
 import ResultPage from './features/train/components/ResultPage';
 
 import { DependencyProvider } from './general/contexts/DependencyContext';
@@ -36,6 +37,7 @@ function App() {
                 </Route>
                 <Route path="train">
                   <Route path="start" element={<StartPage />} />
+                  <Route path="main" element={<MainPage />} />
                   <Route path="result" element={<ResultPage />} />
                 </Route>
               </Routes>
