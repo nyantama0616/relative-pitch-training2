@@ -8,6 +8,7 @@ import TestMidiIOPage from './features/test/TestMidiIOPage';
 import TestTimerPage from './features/test/TestTimerPage';
 import TestTrainManager from './features/test/TestTrainManager';
 import TestFetchTrainRecord from './features/test/TestFetchTrainRecord';
+import TestFetchQuestionnaireTemplate from './features/test/TestFetchQuestionnaireTemplate';
 
 import StartPage from './features/train/components/StartPage';
 import MainPage from './features/train/components/MainPage';
@@ -34,6 +35,8 @@ function App() {
                   <Route path="timer" element={<TestTimerPage />} />
                   <Route path="train" element={<TestTrainManager />} />
                   <Route path="fetch-train-record" element={<TestFetchTrainRecord />} />
+                  <Route path="fetch-questionnaire-template" element={<TestFetchQuestionnaireTemplate />} />
+
                 </Route>
                 <Route path="train">
                   <Route path="start" element={<StartPage />} />

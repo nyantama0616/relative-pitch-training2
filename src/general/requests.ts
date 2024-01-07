@@ -11,6 +11,9 @@ const requests = {
         fetchIntervalRates: (id: number) => `http://localhost:3000/interval_rates?id=${id}`,
         post: "http://localhost:3000/train_records",
         fetch: (id: number) => `http://localhost:3000/train_records/${id}`,
+    },
+    questionnaire: {
+        fetchTemplate: (questionnaireName: string) => `http://localhost:3000/questionnaires/${questionnaireName}`,
     }
 }
 
