@@ -12,7 +12,7 @@ interface HomePageProps {
 
 const initialQuestionnaire: IQuestionnaire = {
     id: -1,
-    QuestionnaireName: "",
+    questionnaireName: "",
     data: [],
     userId: -1,
     createdAt: "",
@@ -31,7 +31,7 @@ export default function TestFormQuestionnaire({ sx }: HomePageProps) {
             .then((res) => {
                 const questionnaire: IQuestionnaire = {
                     id: -1,
-                    QuestionnaireName: questionnaireName,
+                    questionnaireName: questionnaireName,
                     data: res!.questionnaire,
                     userId: -1,
                     createdAt: "",

@@ -14,6 +14,7 @@ const requests = {
     },
     questionnaire: {
         fetchTemplate: (questionnaireName: string) => `http://localhost:3000/questionnaires/${questionnaireName}`,
+        post: "http://localhost:3000/questionnaires",
     }
 }
 

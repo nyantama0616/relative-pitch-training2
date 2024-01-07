@@ -1,10 +1,17 @@
 import IQuestionnaire from "../interfaces/IQuestionnaire";
-import IFormQuestionnaire, {Answers} from "../interfaces/IFormQuestionnaire";
+import IFormQuestionnaire, { Answers } from "../interfaces/IFormQuestionnaire";
+import { useDependency } from "../../../general/contexts/DependencyContext";
+import { useAuth } from "../../auth/contexts/AuthContext";
+import { IQuestionnaireItem } from "../interfaces/IQuestionnaire";
 
 import { useEffect, useState } from "react";
 export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFormQuestionnaire {
     const items = questionnaire.data;
     const [answers, setAnswers] = useState<Answers>({});
+
+    const { usePostQuestionnaire } = useDependency();
+    const postQuestionnaire = usePostQuestionnaire();
+    const { currentUser } = useAuth();
 
     useEffect(() => {
         _initAnswers();
@@ -49,10 +56,12 @@ export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFo
     }
 
     function handleSubmit() {
-        const _answers: { [key: number]: string } = {};
+        let data: IQuestionnaireItem[] = [];
         items.forEach(item => {
+            let answer: string;
             if (typeof answers[item.id] == "string") {
-                _answers[item.id] = answers[item.id] as string;
+                // _answers[item.id] = answers[item.id] as string;
+                answer = answers[item.id] as string;
             } else {
                 const flags = answers[item.id] as boolean[];
                 let t: string[] = [];
@@ -61,11 +70,30 @@ export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFo
                         t.push(x);
                     }
                 });
-                _answers[item.id] = t.join(", ");
+                // _answers[item.id] = t.join(", ");
+                answer = t.join(", ");
             }
+            data.push({
+                id: item.id,
+                content: item.content,
+                answer: answer,
+                maxSelectNum: item.maxSelectNum,
+                remark: item.remark,
+            });
         });
 
-        console.log(_answers);
+        if (currentUser === null) {
+            console.error("User is null");
+            return;
+        }
+
+        console.log(data);
+        
+        postQuestionnaire.post({
+            questionnaireName: questionnaire.questionnaireName,
+            data: data,
+            userId: currentUser!.id,
+        });
     }
 
     function _initAnswers() {

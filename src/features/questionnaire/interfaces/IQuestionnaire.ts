@@ -1,6 +1,6 @@
 export default interface IQuestionnaire {
     id: number;
-    QuestionnaireName: string;
+    questionnaireName: string;
     data: IQuestionnaireItem[];
     userId: number;
     createdAt: string;
