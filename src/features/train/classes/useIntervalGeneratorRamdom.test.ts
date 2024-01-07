@@ -5,19 +5,18 @@ import useIntervalGeneratorRandom from "./useIntervalGeneratorRandom";
 import IIntervalGenerator from "../interfaces/IIntervalGenerator";
 import IInterval from "../interfaces/IInterval";
 
-
-const note1Candidates = [Note.D3, Note.E3, Note.F3, Note.G3, Note.A3, Note.B3, Note.D4, Note.E4, Note.F4, Note.G4, Note.A4, Note.B4];
-
 describe("Test GenerateCounterRandom", () => {
     let n: number;
     let result: { current: IIntervalGenerator; } = null!;
     let questionNum: number;
+    let note1Candidates: number[];
     beforeEach(() => {
         n = 5;
-        questionNum = n * note1Candidates.length;
         result = renderHook(() => {
             return useIntervalGeneratorRandom(n);
-        }).result;
+        }).result; 
+        note1Candidates = result.current.note1Candidates;
+        questionNum = n * note1Candidates.length;
     });
 
     test("note0がC4である", async () => {
@@ -25,7 +24,7 @@ describe("Test GenerateCounterRandom", () => {
             let interval: IInterval;
             
             await act(async () => {
-                interval = result.current.generate();
+                interval = result.current.generate()!;
             });
 
             expect(interval!.note0).toBe(Note.C4);
@@ -37,7 +36,7 @@ describe("Test GenerateCounterRandom", () => {
             let interval: IInterval;
             
             await act(async () => {
-                interval = result.current.generate();
+                interval = result.current.generate()!;
             });
 
             expect(note1Candidates).toContain(interval!.note1);
@@ -54,7 +53,7 @@ describe("Test GenerateCounterRandom", () => {
             let interval: IInterval;
             
             await act(async () => {
-                interval = result.current.generate();
+                interval = result.current.generate()!;
             });
 
             dict[interval!.note1]++;
@@ -74,7 +73,7 @@ describe("Test GenerateCounterRandom", () => {
             let interval: IInterval;
 
             await act(async () => {
-                interval = result.current.generate();
+                interval = result.current.generate()!;
             });
 
             dict[interval!.note1]++;
@@ -91,11 +90,26 @@ describe("Test GenerateCounterRandom", () => {
             let interval: IInterval;
 
             await act(async () => {
-                interval = result.current.generate();
+                interval = result.current.generate()!;
             });
 
             expect(interval!.note1).not.toBe(prevNote);
             prevNote = interval!.note1;
         }
+    });
+
+    test("questionNumを超えてgenerate()を呼び出すとnullが返る", async () => {
+        for (let i = 0; i < questionNum; i++) {
+            await act(async () => {
+                result.current.generate();
+            });
+        }
+
+        let interval: IInterval | null;
+        await act(async () => {
+            interval = result.current.generate();
+        });
+
+        expect(interval!).toBeNull(); 
     });
 });
