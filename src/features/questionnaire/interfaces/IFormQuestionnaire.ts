@@ -6,6 +6,7 @@ export default interface IFormQuestionnaire {
     handleChangeItem: (itemId: number, value: string) => void;
     handleReset: () => void;
     handleSubmit: () => void;
+    isFullFilled(): boolean;
 }
 
 export interface Answers {

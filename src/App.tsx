@@ -14,6 +14,7 @@ import TestFormQuestionnaire from './features/test/TestFormQuestionnaire';
 import StartPage from './features/train/components/StartPage';
 import MainPage from './features/train/components/MainPage';
 import ResultPage from './features/train/components/ResultPage';
+import QuestionnairePage from './features/train/components/QuestionnairePage';
 
 import { DependencyProvider } from './general/contexts/DependencyContext';
 import { AuthProvider } from './features/auth/contexts/AuthContext';
@@ -43,6 +44,7 @@ function App() {
                   <Route path="start" element={<StartPage />} />
                   <Route path="main" element={<MainPage />} />
                   <Route path="result" element={<ResultPage />} />
+                  <Route path="questionnaire" element={<QuestionnairePage />} />
                 </Route>
               </Routes>
             </Router>

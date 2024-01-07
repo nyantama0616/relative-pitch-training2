@@ -109,11 +109,24 @@ export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFo
         setAnswers(_answers);
     }
 
+    function isFullFilled() {
+        let fullFilled = true;
+        items.forEach(item => {
+            if (item.maxSelectNum == 1) {
+                if (answers[item.id] === "") {
+                    fullFilled = false;
+                }
+            }
+        });
+        return fullFilled;
+    }
+
     return {
         items,
         answers,
         handleChangeItem,
         handleReset,
         handleSubmit,
+        isFullFilled,
     }
 }
