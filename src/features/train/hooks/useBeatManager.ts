@@ -26,7 +26,7 @@ export default function useBeatManager({ timer, currentInterval }: Props): IBeat
     const [state, setState] = useState<State>({
         isRunning: false,
         tempo: 100, //現状使わない
-        beatCount: 0,
+        beatCount: -1,
     });
 
     // callback内でcurrentIntervalが更新されない問題へ対処するためにrefを使う
@@ -45,20 +45,19 @@ export default function useBeatManager({ timer, currentInterval }: Props): IBeat
             const interval = intervalRef.current;
 
             if (timer.getFrameCount() % 15 !== 0 || !interval) return;
-            
-
-            const beat = timer.getFrameCount() / 15 % 4;
-            if (beat === 0) {
-                soundPlayer.playNote(interval!.note0, PLAY_NOTE_INTERVAL);
-            } else if (beat === 1) {
-                soundPlayer.playNote(interval!.note1, PLAY_NOTE_INTERVAL);
-            }
 
             //beatCountをインクリメント
             setState(prev => {
+                const beatCount = prev.beatCount + 1;
+                if (beatCount % 4 === 0) {
+                    soundPlayer.playNote(interval!.note0, PLAY_NOTE_INTERVAL);
+                } else if (beatCount % 4 === 1) {
+                    soundPlayer.playNote(interval!.note1, PLAY_NOTE_INTERVAL);
+                }
+
                 return {
                     ...prev,
-                    beatCount: prev.beatCount + 1,
+                    beatCount,
                 }
             });
         });

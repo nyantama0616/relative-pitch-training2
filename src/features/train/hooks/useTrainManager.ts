@@ -28,6 +28,7 @@ const mockQuestion: IQuestion = {
 };
 
 const PRESENT_NUM_PER_NOTE = 5;
+const PRESENT_NUM = PRESENT_NUM_PER_NOTE * 2; //合計音程提示回数
 
 interface State {
     isAnswerable: boolean;
@@ -92,7 +93,7 @@ export default function useTrainManager({ timer, onFinished }: Props): ITrainMan
 
     useEffect(() => {
         if (beatManager.beatCount % 4 === 1 && !state.isAnswerable) {
-            _startSet();
+            _startSet();   
         }
     }, [beatManager.beatCount]);
 
@@ -131,7 +132,7 @@ export default function useTrainManager({ timer, onFinished }: Props): ITrainMan
             const a = [...answeredQuestions, currentQuestion!];
             setAnsweredQuestions(a);
     
-            if (a.length >= PRESENT_NUM_PER_NOTE * 2) { //本番は12
+            if (a.length >= PRESENT_NUM) { //本番は12
                 stop();
                 onFinished(a);
                 return;
