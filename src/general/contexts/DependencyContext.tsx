@@ -5,6 +5,7 @@ import useFetchUsers from '../../features/user/hooks/useFetchUsers';
 import useSignIn from '../../features/auth/hooks/useSignIn';
 import useFetchIntervalRates from '../../features/train/hooks/useFetchIntervalRates';
 import useKeyPressManager from '../hooks/useKeyPressManager';
+import useMidiIO from '../../features/sounds/hooks/useMidiIO';
 import useMidiIOWithKeyPress from '../../features/sounds/hooks/useMidiIOWithKeyPress';
 import useSoundPlayerWithTone from '../../features/sounds/hooks/useSoundPlayerWithTone';
 import useTimerManager from '../hooks/useTimerManager';
@@ -22,7 +23,8 @@ interface DependencyContextType {
     useSignIn: typeof useSignIn,
     useFetchIntervalRates: typeof useFetchIntervalRates,
     useKeyPressManager: typeof useKeyPressManager,
-    useMidiIO: typeof useMidiIOWithKeyPress,
+    // useMidiIO: typeof useMidiIOWithKeyPress,
+    useMidiIO: typeof useMidiIO,
     useSoundPlayerWithTone: typeof useSoundPlayerWithTone,
     useTimerManager: typeof useTimerManager,
     useTrainManager: typeof useTrainManager,
@@ -66,7 +68,8 @@ export function DependencyProvider({ children }: DependencyProviderProps) {
         useSignIn,
         useFetchIntervalRates,
         useKeyPressManager,
-        useMidiIO: useMidiIOWithKeyPress,
+        // useMidiIO: useMidiIOWithKeyPress,
+        useMidiIO,
         useSoundPlayerWithTone,
         useTimerManager,
         useTrainManager,

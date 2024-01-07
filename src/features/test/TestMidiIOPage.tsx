@@ -5,9 +5,6 @@ import { useEffect } from "react";
 import { KeyPressProvider } from "../../general/contexts/KeyPressContext";
 
 export default function TestSoundPage() {
-    const { useKeyPressManager } = useDependency();
-    const keyPressManager = useKeyPressManager();
-
     return (
         <PageTemplate className="test-key-press">
             <h1>MidiIO Test</h1>
