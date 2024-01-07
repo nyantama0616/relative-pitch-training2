@@ -39,6 +39,15 @@ const initialState: State = {
     prevScore: null,
 };
 
+const initialQuestion: IQuestion = {
+    interval: {
+        note0: 60,
+        note1: 60,
+    },
+    startTime: 0,
+    keyPushes: [],
+};
+
 interface Props {
     timer: ITimerManager;
     onFinished: (questions: IQuestion[]) => void;
@@ -46,7 +55,7 @@ interface Props {
 export default function useTrainManager({ timer, onFinished }: Props): ITrainManager {
     // const [isAnswerable, setIsAnswerable] = useState<boolean>(false);
     const [state, setState] = useState<State>(initialState);
-    const [currentQuestion, setCurrentQuestion] = useState<IQuestion | null>(null);
+    const [currentQuestion, setCurrentQuestion] = useState<IQuestion | null>(initialQuestion);
     
     // const [currentQuestion, setCurrentQuestion] = useState<IQuestion | null>(mockQuestion);
     const [answeredQuestions, setAnsweredQuestions] = useState<IQuestion[]>([]);
@@ -63,18 +72,8 @@ export default function useTrainManager({ timer, onFinished }: Props): ITrainMan
         isAnswerable: state.isAnswerable,
         currentInterval: currentQuestion?.interval || null,
         onRight: (note: Note) => {
-            console.log("right");
             _pushKey(note);
-            setState(prev => {
-                return {
-                    prevScore: {
-                        interval: currentQuestion!.interval,
-                        startTime: currentQuestion!.startTime,
-                        endTime: timer.getPassedTime(),
-                    },
-                    isAnswerable: false,
-                }
-            });
+            _endSet();
         },
         onWrong: (note: Note) => {
             _pushKey(note);
@@ -92,20 +91,8 @@ export default function useTrainManager({ timer, onFinished }: Props): ITrainMan
     }, [currentQuestion]);
 
     useEffect(() => {
-        if (beatManager.beatCount % 4 === 1) {
-            setState(prev => {
-                return {
-                    ...prev,
-                    isAnswerable: true,
-                }
-            });
-
-            setCurrentQuestion(prev => {
-                return {
-                    ...prev!,
-                    startTime: timer.getPassedTime(),
-                }   
-            });
+        if (beatManager.beatCount % 4 === 1 && !state.isAnswerable) {
+            _startSet();
         }
     }, [beatManager.beatCount]);
 
@@ -151,12 +138,45 @@ export default function useTrainManager({ timer, onFinished }: Props): ITrainMan
             }
         }
 
-        setCurrentQuestion({
-            interval: intervalGenerator.generate(),
-            // startTime: timer.getPassedTime(),
-            startTime: -1, //TODO: ここでは-1にしておく, けど後でちゃんと書こう
-            keyPushes: [],
-        });  
+        //ここではintervalだけ更新する
+        setCurrentQuestion(prev => {
+            return {
+                ...prev!,
+                interval: intervalGenerator.generate(),
+            }
+        });
+    }
+
+    function _startSet() {
+        console.log("startSet");
+        
+        setState({
+            prevScore: null,
+            isAnswerable: true,
+        });
+
+        setCurrentQuestion(prev => {
+            return {
+                ...prev!,
+                startTime: timer.getPassedTime(),
+                keyPushes: [],
+            }   
+        })
+    }
+
+    function _endSet() {
+        console.log("endSet");
+        
+        setState(prev => {
+            return {
+                prevScore: {
+                    interval: currentQuestion!.interval,
+                    startTime: currentQuestion!.startTime,
+                    endTime: timer.getPassedTime(),
+                },
+                isAnswerable: false,
+            }
+        });
     }
 
     return {
