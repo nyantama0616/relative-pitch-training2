@@ -9,6 +9,7 @@ import TestTimerPage from './features/test/TestTimerPage';
 import TestTrainManager from './features/test/TestTrainManager';
 import TestFetchTrainRecord from './features/test/TestFetchTrainRecord';
 import TestFetchQuestionnaireTemplate from './features/test/TestFetchQuestionnaireTemplate';
+import TestFormQuestionnaire from './features/test/TestFormQuestionnaire';
 
 import StartPage from './features/train/components/StartPage';
 import MainPage from './features/train/components/MainPage';
@@ -36,7 +37,7 @@ function App() {
                   <Route path="train" element={<TestTrainManager />} />
                   <Route path="fetch-train-record" element={<TestFetchTrainRecord />} />
                   <Route path="fetch-questionnaire-template" element={<TestFetchQuestionnaireTemplate />} />
-
+                  <Route path="form-questionnaire" element={<TestFormQuestionnaire />} />
                 </Route>
                 <Route path="train">
                   <Route path="start" element={<StartPage />} />
