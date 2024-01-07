@@ -28,7 +28,6 @@ const mockQuestion: IQuestion = {
 };
 
 const PRESENT_NUM_PER_NOTE = 5;
-const PRESENT_NUM = PRESENT_NUM_PER_NOTE * 2; //合計音程提示回数
 
 interface State {
     isAnswerable: boolean;
@@ -136,22 +135,25 @@ export default function useTrainManager({ timer, onFinished }: Props): ITrainMan
     }
 
     function _nextQuestion(): void {
+        let a: IQuestion[] = [];
         if (currentQuestion) {
-            const a = [...answeredQuestions, currentQuestion!];
+            a = [...answeredQuestions, currentQuestion!];
             setAnsweredQuestions(a);
-    
-            if (a.length >= PRESENT_NUM) { //本番は12
-                stop();
-                onFinished(a);
-                return;
-            }
+        }
+
+        const nextInterval = intervalGenerator.generate();
+
+        if (nextInterval === null) {
+            stop();
+            onFinished(a);
+            return;
         }
 
         //ここではintervalだけ更新する
         setCurrentQuestion(prev => {
             return {
                 ...prev!,
-                interval: intervalGenerator.generate(),
+                interval: nextInterval!,
             }
         });
     }

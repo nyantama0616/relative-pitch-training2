@@ -64,7 +64,7 @@ export function useTrainPage() {
 
     const [state, setState] = useState<State>({
         isCounting: false,
-        counter: 2,
+        counter: 3,
     });
 
     const duration = !trainManager.isAnswerable && trainManager.prevScore !== null ? trainManager.prevScore.endTime - trainManager.prevScore.startTime : null;
