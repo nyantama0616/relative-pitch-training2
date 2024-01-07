@@ -6,8 +6,9 @@ import ITrainRecord from "../interfaces/ITrainRecord";
 
 interface TrainRecordProps {
     trainRecord: ITrainRecord
+    sx?: SxProps
 }
-export default function TrainRecord({ trainRecord }: TrainRecordProps) {    
+export default function TrainRecord({ trainRecord, sx }: TrainRecordProps) {    
     const questionComponents = trainRecord.questions.map((question, i) => {
         return <ListItem key={i.toString()}>
             <Box>
@@ -18,13 +19,15 @@ export default function TrainRecord({ trainRecord }: TrainRecordProps) {
     });
 
     return (
-        <Box>
+        <Box sx={sx}>
             <h1>Train Record</h1>
             <h2>Record Id: {trainRecord.id}</h2>
             <h2>User Id: {trainRecord.userId}</h2>
-            <List>
-                {questionComponents}
-            </List>
+            <Box sx={{height: "85%", overflow: "scroll"}}>
+                <List>
+                    {questionComponents}
+                </List>
+            </Box>
         </Box>
     );
 

@@ -27,7 +27,7 @@ export default function TestFetchTrainRecord() {
         <PageTemplate>
             {trainRecord === null
                 ? null
-                : <TrainRecord trainRecord={trainRecord} />
+                : <TrainRecord trainRecord={trainRecord} sx={{height: "1000px"}} />
             }
         </PageTemplate>
     );
