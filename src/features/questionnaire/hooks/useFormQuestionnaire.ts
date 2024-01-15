@@ -78,7 +78,7 @@ export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFo
                 content: item.content,
                 answer: answer,
                 maxSelectNum: item.maxSelectNum,
-                remark: item.remark,
+                remarks: item.remarks,
             });
         });
 

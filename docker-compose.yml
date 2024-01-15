@@ -16,8 +16,8 @@ services:
     build:
       context: ./relative-pitch-training-api
       dockerfile: ./Dockerfile
-    # command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails db:create && bundle exec rails s -p 3000 -b '0.0.0.0'"
-    command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails db:create && bundle exec rails s -p 3000 -b '0.0.0.0' -e test"
+    command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails db:create && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    # command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails db:create && bundle exec rails s -p 3000 -b '0.0.0.0' -e test"
     volumes:
       - ./relative-pitch-training-api:/app:cached
       - bundle-volume:/usr/local/bundle

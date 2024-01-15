@@ -11,5 +11,5 @@ export interface IQuestionnaireItem {
     content: string;
     answer: string;
     maxSelectNum: number;
-    remark: string;
+    remarks: string;
 }
