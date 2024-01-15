@@ -18,6 +18,8 @@ export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFo
     }, [questionnaire]);
 
     function handleChangeItem(itemId: number, value: string) {
+        console.log(`handleChangeItem(${itemId}, ${value})`);
+        
         const item = items.find(item => {
             return item.id == itemId
         });
@@ -31,24 +33,46 @@ export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFo
             item.answer.split(", ").forEach((x, index) => {                
                 if (x === value) {
                     setAnswers(prev => {
-                        const prevAnswer = prev[itemId] as boolean[];
+                        const prevAnswer = prev[itemId].answer as boolean[];
                         let newAnswers = [...prevAnswer];
                         newAnswers[index] = !newAnswers[index];
+
+                        const prevItem = prev[itemId];
                         return {
                             ...prev,
-                            [itemId]: newAnswers,
+                            [itemId]: {
+                                ...prevItem,
+                                answer: newAnswers,
+                            }
                         }
                     });
                 }
             });
         } else {
             setAnswers(prev => {
+                const prevItem = prev[itemId];
                 return {
                     ...prev,
-                    [itemId]: value,
+                    [itemId]: {
+                        ...prevItem,
+                        answer: value,
+                    }
                 }
             });
         }
+    }
+
+    function handleChangeRemarks(itemId: number, value: string) {
+        setAnswers(prev => {
+            const prevItem = prev[itemId];
+            return {
+                ...prev,
+                [itemId]: {
+                    ...prevItem,
+                    remarks: value,
+                }
+            }
+        });
     }
 
     function handleReset() {
@@ -59,18 +83,16 @@ export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFo
         let data: IQuestionnaireItem[] = [];
         items.forEach(item => {
             let answer: string;
-            if (typeof answers[item.id] == "string") {
-                // _answers[item.id] = answers[item.id] as string;
-                answer = answers[item.id] as string;
+            if (typeof answers[item.id].answer == "string") {
+                answer = answers[item.id].answer as string;
             } else {
-                const flags = answers[item.id] as boolean[];
+                const flags = answers[item.id].answer as boolean[];
                 let t: string[] = [];
                 item.answer.split(", ").forEach((x, index) => {
                     if (flags[index]) {
                         t.push(x);
                     }
                 });
-                // _answers[item.id] = t.join(", ");
                 answer = t.join(", ");
             }
             data.push({
@@ -78,7 +100,7 @@ export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFo
                 content: item.content,
                 answer: answer,
                 maxSelectNum: item.maxSelectNum,
-                remarks: item.remarks,
+                remarks: answers[item.id].remarks,
             });
         });
 
@@ -101,9 +123,15 @@ export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFo
         items.forEach(item => {
             if (item.maxSelectNum > 1) {
                 const len = item.answer.split(", ").length;
-                _answers[item.id] = Array(len).fill(false);
+                _answers[item.id] = {
+                    answer: Array(len).fill(false),
+                    remarks: "",
+                };
             } else {
-                _answers[item.id] = "";
+                _answers[item.id] = {
+                    answer: "",
+                    remarks: "",
+                };
             }
         });
         setAnswers(_answers);
@@ -113,7 +141,7 @@ export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFo
         let fullFilled = true;
         items.forEach(item => {
             if (item.maxSelectNum == 1) {
-                if (answers[item.id] === "") {
+                if (answers[item.id].answer === "") {
                     fullFilled = false;
                 }
             }
@@ -125,6 +153,7 @@ export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFo
         items,
         answers,
         handleChangeItem,
+        handleChangeRemarks,
         handleReset,
         handleSubmit,
         isFullFilled,

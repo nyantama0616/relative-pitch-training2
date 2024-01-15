@@ -2,6 +2,7 @@ import { Box, List, ListItem, Select, MenuItem, SelectChangeEvent, FormControl, 
 import { SxProps } from '@mui/system';
 import IFormQuestionnaire from '../interfaces/IFormQuestionnaire';
 import { IQuestionnaireItem } from '../interfaces/IQuestionnaire';
+import Remarks from './Remarks';
 
 interface FormQuestionnaireProps {
     hook: IFormQuestionnaire;
@@ -23,7 +24,7 @@ export default function FormQuestionnaire({ hook, sx }: FormQuestionnaireProps) 
                                                 name={item.id.toString()}
                                                 value={option}
                                                 onChange={_handleChange}
-                                                checked={hook.answers[item.id] ? (hook.answers[item.id] as boolean[])[index2] : false}
+                                                checked={hook.answers[item.id] ? (hook.answers[item.id]?.answer as boolean[])[index2] : false}
                                             />
                                         </Grid>
                                         <Grid item xs={11}>
@@ -38,7 +39,7 @@ export default function FormQuestionnaire({ hook, sx }: FormQuestionnaireProps) 
 
                         : <Select
                             name={item.id.toString()}
-                            value={hook.answers[item.id] as string || ""}
+                            value={hook.answers[item.id]?.answer as string || ""}
                             onChange={_handleChange}
                         >
                             {_getOptions(item).map((option, index) => {
@@ -48,7 +49,7 @@ export default function FormQuestionnaire({ hook, sx }: FormQuestionnaireProps) 
                             })}
                         </Select>
                     }
-                    
+                    <Remarks itemId={item.id} onChange={hook.handleChangeRemarks} content={hook.answers[item.id]?.remarks || ""} />
                 </FormControl>
             </ListItem>
         );
