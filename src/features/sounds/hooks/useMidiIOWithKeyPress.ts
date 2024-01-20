@@ -63,11 +63,11 @@ export default function useMidiIOWithKeyPress(): IMidiIO {
     }, [keyUpInfo]);
 
     function setInput(deviceName: string) {
-        
+        console.log(`set ${deviceName} as input device`);
     }
 
     function setOutput(deviceName: string) {
-
+        console.log(`set ${deviceName} as output device`);
     }
 
     function sendMessage(message: IMidiMessage) {
@@ -79,7 +79,7 @@ export default function useMidiIOWithKeyPress(): IMidiIO {
     }
 
     return {
-        availableInputDevices: [mockMidiDevice],
+        availableInputDevices: [mockMidiDevice, "device2", "device3"],
         availableOutputDevices: [mockMidiDevice],
         currentInputDevice: mockMidiDevice,
         currentOutputDevice: mockMidiDevice,

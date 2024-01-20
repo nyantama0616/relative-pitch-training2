@@ -3,6 +3,7 @@ import PageTemplate from "../../general/components/PageTemplate";
 import { useDependency } from "../../general/contexts/DependencyContext";
 import { useEffect } from "react";
 import { KeyPressProvider } from "../../general/contexts/KeyPressContext";
+import SettingsMidi from "../sounds/components/SettingsMidi";
 
 export default function TestSoundPage() {
     return (
@@ -32,6 +33,7 @@ function Main() {
             <h2>Input Message</h2>
             <p>type: {midiIO.inputMessage?.type}</p>
             <p>note: {midiIO.inputMessage?.note}</p>
+            <SettingsMidi midiIO={midiIO} />
         </Box>
     );
 
