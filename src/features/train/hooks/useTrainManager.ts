@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import IQuestion from "../interfaces/IQuestion";
 import ITimerManager from "../../../general/interfaces/ITimerManager";
 import Note from "../../sounds/enums/Note";
+import IMidiIO from "../../sounds/interfaces/IMidiIO";
 
 const mockQuestion: IQuestion = {
     interval: {
@@ -58,9 +59,10 @@ const initialQuestion: IQuestion = {
 
 interface Props {
     timer: ITimerManager;
+    midiIO: IMidiIO;
     onFinished: (questions: IQuestion[]) => void;
 }
-export default function useTrainManager({ timer, onFinished }: Props): ITrainManager {
+export default function useTrainManager({ timer, midiIO, onFinished }: Props): ITrainManager {
     // const [isAnswerable, setIsAnswerable] = useState<boolean>(false);
     const [state, setState] = useState<State>(initialState);
     const [currentQuestion, setCurrentQuestion] = useState<IQuestion | null>(initialQuestion);

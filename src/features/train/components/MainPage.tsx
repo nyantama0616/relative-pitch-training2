@@ -6,6 +6,7 @@ import PageTemplate from "../../../general/components/PageTemplate";
 import { useAuth } from "../../auth/contexts/AuthContext";
 import IQuestion from "../interfaces/IQuestion";
 import DurationBar from "./DurationBar";
+import SettingsMidi from "../../sounds/components/SettingsMidi";
 
 interface TrainPageProps {
     sx?: SxProps;
@@ -13,9 +14,20 @@ interface TrainPageProps {
 export default function TrainPage({ sx }: TrainPageProps) {
     const hook = useTrainPage();
 
-    const beforeComponent = hook.isCounting
-        ? <h1>{hook.counter}</h1>
-        : <Button variant="contained" onClick={hook.start}>スタート</Button>
+    const beforeComponent = hook.isCounting ?
+        <h1>{hook.counter}</h1>
+        :
+        <Box>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <SettingsMidi midiIO={hook.midiIO} />
+                </Grid>
+                
+                <Grid item xs={12}>
+                    < Button variant = "contained" onClick = { hook.start } > スタート</Button>
+                </Grid>
+            </Grid>
+        </Box>
 
     return (
         <PageTemplate className="train-train-page" sx={sx}>
@@ -28,17 +40,17 @@ export default function TrainPage({ sx }: TrainPageProps) {
                     alignItems: "center",
                 }}
             >
-                        {!hook.isRunning
-                            ? beforeComponent
-                            : <Box sx={{ height: "80%", width: "80%" }}>
-                                <DurationBar
-                                    duration={hook.dbps.duration}
-                                    startTime={hook.dbps.startTime!}
-                                    getPassedTime={hook.dbps.getPassedTime}
-                                    border={1000}
-                                />
-                            </Box>
-                        }
+                {!hook.isRunning
+                    ? beforeComponent
+                    : <Box sx={{ height: "80%", width: "80%" }}>
+                        <DurationBar
+                            duration={hook.dbps.duration}
+                            startTime={hook.dbps.startTime!}
+                            getPassedTime={hook.dbps.getPassedTime}
+                            border={1500}
+                        />
+                    </Box>
+                }
             </Box>
         </PageTemplate>
     );
@@ -49,11 +61,13 @@ interface State {
     counter: number;
 }
 export function useTrainPage() {
-    const { useTrainManager, useTimerManager, usePostTrainRecord } = useDependency();
+    const { useTrainManager, useTimerManager, usePostTrainRecord, useMidiIO } = useDependency();
     const timer = useTimerManager();
     const postTrainRecord = usePostTrainRecord();
+    const midiIO = useMidiIO();
     const trainManager = useTrainManager({
         timer,
+        midiIO,
         onFinished: (questions) => {
             console.log("finished");
             _save(questions);
@@ -106,6 +120,7 @@ export function useTrainPage() {
             duration,
             startTime: trainManager.currentQuestion?.startTime,
             getPassedTime: timer.getPassedTime
-        }
+        },
+        midiIO,
     }
 }

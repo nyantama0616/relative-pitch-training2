@@ -3,13 +3,13 @@ import { Box, Grid, Button, Paper, List, ListItem } from "@mui/material";
 import IQuestion from "../train/interfaces/IQuestion";
 import IKeyPush from "../train/interfaces/IKeyPush";
 import DurationBar from "../train/components/DurationBar";
+import SettingsMidi from "../sounds/components/SettingsMidi";
 
 import { SxProps } from "@mui/system";
 import { useDependency } from "../../general/contexts/DependencyContext";
 import getNoteName from "../sounds/lib/getNoteName";
 import { KeyPressProvider } from "../../general/contexts/KeyPressContext";
 import { useAuth } from "../auth/contexts/AuthContext";
-import { useEffect } from "react";
 
 export default function TestTrainManager() {
     return <PageTemplate>
@@ -21,12 +21,14 @@ export default function TestTrainManager() {
 }
 
 function Main() {
-    const { useTrainManager, useTimerManager, usePostTrainRecord } = useDependency();
+    const { useTrainManager, useTimerManager, usePostTrainRecord, useMidiIO } = useDependency();
     const { currentUser } = useAuth();
     const timer = useTimerManager();
     const postTrainRecord = usePostTrainRecord();
+    const midiIO = useMidiIO();
     const trainManager = useTrainManager({
         timer,
+        midiIO,
         onFinished: (questions: IQuestion[]) => {
             console.log("finished");
             postTrainRecord.post({
@@ -50,6 +52,10 @@ function Main() {
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
+                <SettingsMidi midiIO={midiIO}/>
+            </Grid>
+
+            <Grid item xs={12}>
                 <h2>Current Question</h2>
                 <Question question={trainManager.currentQuestion} />
             </Grid>
@@ -66,13 +72,13 @@ function Main() {
                 </Box>
             </Grid>
 
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
                 {
                     trainManager.currentQuestion === null
                         ? null
                         : <DurationBar duration={duration} startTime={trainManager.currentQuestion.startTime} getPassedTime={timer.getPassedTime} border={2000} />
                 }
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={12}>
                 <Box sx={{
