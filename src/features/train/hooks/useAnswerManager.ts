@@ -10,10 +10,11 @@ interface Props {
     midiIO: IMidiIO;
     isAnswerable: boolean;
     currentInterval: IInterval | null;
+    flagPlayNoteOnAnswer?: boolean;
     onRight: (note: Note) => void;
     onWrong: (note: Note) => void;
 }
-export default function useAnswerManager({ midiIO, isAnswerable, currentInterval, onRight, onWrong }: Props): IAnswerManager {
+export default function useAnswerManager({ midiIO, isAnswerable, currentInterval, flagPlayNoteOnAnswer=false, onRight, onWrong }: Props): IAnswerManager {
     const [isRunning, setIsRunning] = useState(false);
     
     const pushedNotesRef = useRef<Set<Note>>(new Set());
@@ -33,7 +34,7 @@ export default function useAnswerManager({ midiIO, isAnswerable, currentInterval
         */
         if (midiIO.inputMessage!.type === "On") {
             pushedNotesRef.current.add(note);
-            soundPlayer.playNote(note, 500); //TODO: 適切な長さにする
+            if (flagPlayNoteOnAnswer) soundPlayer.playNote(note, 500); //TODO: 適切な長さにする
         } else {
             pushedNotesRef.current.delete(note);
         }
