@@ -76,7 +76,6 @@ export default function useTrainManager({ timer, midiIO, onFinished }: Props): I
         currentInterval: currentQuestion?.interval || null,
     });
 
-    const midiIO = useMidiIO();
     const answerManager = useAnswerManager({
         midiIO,
         isAnswerable: state.isAnswerable,
