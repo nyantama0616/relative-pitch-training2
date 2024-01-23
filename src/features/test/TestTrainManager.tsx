@@ -35,7 +35,8 @@ function Main() {
                 userId: currentUser!.id,
                 questions: questions,
             })
-        }
+        },
+        PRESENT_NUM_PER_NOTE: 5
     });
 
     const answeredQuestions = trainManager.answeredQuestions.map((question, i) => {
@@ -72,13 +73,13 @@ function Main() {
                 </Box>
             </Grid>
 
-            {/* <Grid item xs={12}>
+            <Grid item xs={12}>
                 {
                     trainManager.currentQuestion === null
                         ? null
                         : <DurationBar duration={duration} startTime={trainManager.currentQuestion.startTime} getPassedTime={timer.getPassedTime} border={2000} />
                 }
-            </Grid> */}
+            </Grid>
 
             <Grid item xs={12}>
                 <Box sx={{

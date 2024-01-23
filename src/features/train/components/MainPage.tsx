@@ -1,5 +1,5 @@
 import { SxProps } from "@mui/system";
-import { Box, Grid, Button } from "@mui/material";
+import { Box, Grid, Button, Typography } from "@mui/material";
 import { useEffect, useState, useRef } from "react";
 import { useDependency } from "../../../general/contexts/DependencyContext";
 import PageTemplate from "../../../general/components/PageTemplate";
@@ -9,16 +9,25 @@ import DurationBar from "./DurationBar";
 import SettingsMidi from "../../sounds/components/SettingsMidi";
 
 interface TrainPageProps {
+    isTest?: boolean;
     sx?: SxProps;
 }
-export default function TrainPage({ sx }: TrainPageProps) {
-    const hook = useTrainPage();
+export default function TrainPage({ isTest = false, sx }: TrainPageProps) {
+    const PRESENT_NUM_PER_NOTE = isTest ? 2 : 5;
+    const title = isTest ? "Test" : "Training";
+
+    const hook = useTrainPage(PRESENT_NUM_PER_NOTE);
 
     const beforeComponent = hook.isCounting ?
         <h1>{hook.counter}</h1>
         :
         <Box>
             <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Typography variant="h3">
+                        {title}
+                    </Typography>
+                </Grid>
                 <Grid item xs={12}>
                     <SettingsMidi midiIO={hook.midiIO} />
                 </Grid>
@@ -60,7 +69,7 @@ interface State {
     isCounting: boolean;
     counter: number;
 }
-export function useTrainPage() {
+export function useTrainPage(PRESENT_NUM_PER_NOTE: number) {
     const { useTrainManager, useTimerManager, usePostTrainRecord, useMidiIO } = useDependency();
     const timer = useTimerManager();
     const postTrainRecord = usePostTrainRecord();
@@ -68,6 +77,7 @@ export function useTrainPage() {
     const trainManager = useTrainManager({
         timer,
         midiIO,
+        PRESENT_NUM_PER_NOTE,
         onFinished: (questions) => {
             console.log("finished");
             _save(questions);

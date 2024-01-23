@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import IQuestionnaire from "../questionnaire/interfaces/IQuestionnaire";
 import FormQuestionnaire from "../questionnaire/components/FormQuestionnaire";
 
-interface HomePageProps {
+interface TestQuestionnaireProps {
+    questionnaireName: string;
     sx?: SxProps;
 }
 
@@ -18,12 +19,11 @@ const initialQuestionnaire: IQuestionnaire = {
     createdAt: "",
 };
 
-export default function TestFormQuestionnaire({ sx }: HomePageProps) {
+export default function TestFormQuestionnaire({ questionnaireName, sx }: TestQuestionnaireProps) {
     const { useFetchQuestionnaireTemplate, useFormQuestionnaire } = useDependency();
     const fetchQuestionnaireTemplate = useFetchQuestionnaireTemplate();
     const [quest, setQuest] = useState<IQuestionnaire>(initialQuestionnaire);
     const formQuestionnaire = useFormQuestionnaire(quest);
-    const questionnaireName = "interest";
 
     useEffect(() => {
         fetchQuestionnaireTemplate

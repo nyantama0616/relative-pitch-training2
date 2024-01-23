@@ -38,11 +38,20 @@ function App() {
                   <Route path="train" element={<TestTrainManager />} />
                   <Route path="fetch-train-record" element={<TestFetchTrainRecord />} />
                   <Route path="fetch-questionnaire-template" element={<TestFetchQuestionnaireTemplate />} />
-                  <Route path="form-questionnaire" element={<TestFormQuestionnaire />} />
+                  {/* <Route path="form-questionnaire" element={<TestFormQuestionnaire />} /> */}
                 </Route>
+
+                <Route path="questionnaire">
+                  <Route path="attribute" element={<TestFormQuestionnaire questionnaireName="attribute"/>} />
+                  <Route path="interest" element={<TestFormQuestionnaire questionnaireName="interest"/>} />
+                  <Route path="self_efficacy" element={<TestFormQuestionnaire questionnaireName="self_efficacy"/>} />
+                  <Route path="motivation" element={<TestFormQuestionnaire questionnaireName="motivation"/>} />
+                </Route>
+
                 <Route path="train">
                   <Route path="start" element={<StartPage />} />
                   <Route path="main" element={<MainPage />} />
+                  <Route path="test" element={<MainPage isTest={true} />} />
                   <Route path="result" element={<ResultPage />} />
                   <Route path="questionnaire" element={<QuestionnairePage />} />
                 </Route>

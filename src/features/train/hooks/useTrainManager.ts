@@ -30,8 +30,6 @@ const mockQuestion: IQuestion = {
         ],
 };
 
-const PRESENT_NUM_PER_NOTE = 5;
-
 interface State {
     isAnswerable: boolean;
     prevScore: Score | null;
@@ -64,9 +62,10 @@ const initialQuestion: IQuestion = {
 interface Props {
     timer: ITimerManager;
     midiIO: IMidiIO;
+    PRESENT_NUM_PER_NOTE: number;
     onFinished: (questions: IQuestion[]) => void;
 }
-export default function useTrainManager({ timer, midiIO, onFinished }: Props): ITrainManager {
+export default function useTrainManager({ timer, midiIO, PRESENT_NUM_PER_NOTE, onFinished }: Props): ITrainManager {
     // const [isAnswerable, setIsAnswerable] = useState<boolean>(false);
     const [state, setState] = useState<State>(initialState);
     const [currentQuestion, setCurrentQuestion] = useState<IQuestion | null>(initialQuestion);
