@@ -19,6 +19,7 @@ export default function usePostTrainRecord(): IPostTrainRecord {
                 })
                 .catch(() => {
                     console.error("Failed to post Train Record.");
+                    console.log(data);
                     reject(null);
                 });
         });
