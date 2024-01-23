@@ -16,8 +16,9 @@ interface State {
 interface Props {
     timer: ITimerManager;
     currentInterval: IInterval | null;
+    flagPlayNote: boolean;
 }
-export default function useBeatManager({ timer, currentInterval }: Props): IBeatManager {
+export default function useBeatManager({ timer, currentInterval, flagPlayNote }: Props): IBeatManager {
     const { useSoundPlayerWithTone } = useDependency();
     const soundPlayer = useSoundPlayerWithTone();
 
@@ -49,10 +50,12 @@ export default function useBeatManager({ timer, currentInterval }: Props): IBeat
             //beatCountをインクリメント
             setState(prev => {
                 const beatCount = prev.beatCount + 1;
-                if (beatCount % 4 === 0) {
-                    soundPlayer.playNote(interval!.note0, PLAY_NOTE_INTERVAL);
-                } else if (beatCount % 4 === 1) {
-                    soundPlayer.playNote(interval!.note1, PLAY_NOTE_INTERVAL);
+                if (flagPlayNote) {
+                    if (beatCount % 4 === 0) {
+                        soundPlayer.playNote(interval!.note0, PLAY_NOTE_INTERVAL);
+                    } else if (beatCount % 4 === 1) {
+                        soundPlayer.playNote(interval!.note1, PLAY_NOTE_INTERVAL);
+                    }
                 }
 
                 return {
