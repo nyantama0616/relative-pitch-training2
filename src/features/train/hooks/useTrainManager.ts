@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import IQuestion from "../interfaces/IQuestion";
 import ITimerManager from "../../../general/interfaces/ITimerManager";
 import Note from "../../sounds/enums/Note";
+import getNoteName from "../../sounds/lib/getNoteName";
 import IMidiIO from "../../sounds/interfaces/IMidiIO";
+import { logDOM } from "@testing-library/react";
 
 const mockQuestion: IQuestion = {
     interval: {
@@ -33,6 +35,7 @@ const PRESENT_NUM_PER_NOTE = 5;
 interface State {
     isAnswerable: boolean;
     prevScore: Score | null;
+    isWaiting: boolean;
 }
 
 //TODO: ここでprevScoreをnullにすると、startSetより前にDurationBarが動く。クソグラムのせい
@@ -46,6 +49,7 @@ const initialState: State = {
         startTime: -1,
         endTime: -1,
     },
+    isWaiting: false,
 };
 
 const initialQuestion: IQuestion = {
@@ -70,10 +74,11 @@ export default function useTrainManager({ timer, midiIO, onFinished }: Props): I
     // const [currentQuestion, setCurrentQuestion] = useState<IQuestion | null>(mockQuestion);
     const [answeredQuestions, setAnsweredQuestions] = useState<IQuestion[]>([]);
 
-    const { useBeatManager, useAnswerManager, useMidiIO, useIntervalGenerator } = useDependency();
+    const { useBeatManager, useAnswerManager, useIntervalGenerator } = useDependency();
     const beatManager = useBeatManager({
         timer,
         currentInterval: currentQuestion?.interval || null,
+        flagPlayNote: !state.isWaiting,
     });
 
     const answerManager = useAnswerManager({
@@ -100,8 +105,21 @@ export default function useTrainManager({ timer, midiIO, onFinished }: Props): I
     }, [currentQuestion]);
 
     useEffect(() => {
+        console.log(state.isAnswerable);
+        
         if (beatManager.beatCount % 4 === 1 && !state.isAnswerable) {
-            _startSet();   
+            if (state.isWaiting) {
+                // console.log("skip!");
+                
+                setState(prev => {
+                    return {
+                        ...prev,
+                        isWaiting: false,
+                    }
+                });
+            } else {
+                _startSet();
+            }
         }
     }, [beatManager.beatCount]);
 
@@ -160,11 +178,12 @@ export default function useTrainManager({ timer, midiIO, onFinished }: Props): I
     }
 
     function _startSet() {
-        console.log("startSet");
+        // console.log("start, ", getNoteName(currentQuestion!.interval.note1), " ", beatManager.beatCount % 4);
         
         setState({
             prevScore: null,
             isAnswerable: true,
+            isWaiting: false,
         });
 
         setCurrentQuestion(prev => {
@@ -177,7 +196,19 @@ export default function useTrainManager({ timer, midiIO, onFinished }: Props): I
     }
 
     function _endSet() {
-        // console.log("endSet");
+        let isWaiting = false;
+        if (beatManager.beatCount % 4 === 0) {
+            isWaiting = true;
+        }
+        // console.log({
+        //     isWaiting,
+        //     beatCount: beatManager.beatCount,
+        //     frameCount: timer.getFrameCount(),
+        //     passedTime: timer.getPassedTime(),
+        //     interval: currentQuestion!.interval,
+        // });
+
+        // console.log("end", getNoteName(currentQuestion!.interval.note1), " ", beatManager.beatCount % 4);
         
         setState(prev => {
             return {
@@ -187,6 +218,7 @@ export default function useTrainManager({ timer, midiIO, onFinished }: Props): I
                     endTime: timer.getPassedTime(),
                 },
                 isAnswerable: false,
+                isWaiting: isWaiting,
             }
         });
     }
