@@ -8,7 +8,7 @@ interface UserListItemProps {
 export default function UserListItem({ user, onClick }: UserListItemProps) {
     return (
         <ListItemButton onClick={() => { onClick(user) }}>
-            <ListItemText primary={user.email} />
+            <ListItemText primary={user.userName} />
         </ListItemButton>
     )
 }
