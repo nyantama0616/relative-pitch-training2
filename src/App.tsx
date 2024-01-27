@@ -10,6 +10,7 @@ import TestTrainManager from './features/test/TestTrainManager';
 import TestFetchTrainRecord from './features/test/TestFetchTrainRecord';
 import TestFetchQuestionnaireTemplate from './features/test/TestFetchQuestionnaireTemplate';
 import TestFormQuestionnaire from './features/test/TestFormQuestionnaire';
+import TestFetchMeans from './features/test/TestFetchMeans';
 
 import StartPage from './features/train/components/StartPage';
 import MainPage from './features/train/components/MainPage';
@@ -38,7 +39,7 @@ function App() {
                   <Route path="train" element={<TestTrainManager />} />
                   <Route path="fetch-train-record" element={<TestFetchTrainRecord />} />
                   <Route path="fetch-questionnaire-template" element={<TestFetchQuestionnaireTemplate />} />
-                  {/* <Route path="form-questionnaire" element={<TestFormQuestionnaire />} /> */}
+                  <Route path="fetch-means" element={<TestFetchMeans />} />
                 </Route>
 
                 <Route path="questionnaire">

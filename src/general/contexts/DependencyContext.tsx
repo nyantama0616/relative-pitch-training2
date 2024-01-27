@@ -18,6 +18,7 @@ import useFetchTrainRecord from '../../features/train/hooks/useFetchTrainRecord'
 import useFetchQuestionnaireTemplate from '../../features/questionnaire/hooks/useFetchQuestionnaireTemplate';
 import useFormQuestionnaire from '../../features/questionnaire/hooks/useFormQuestionnaire';
 import usePostQuestionnaire from '../../features/questionnaire/hooks/usePostQuestionnaire';
+import useFetchMeans from '../../features/train/hooks/useFetchMeans';
 
 interface DependencyContextType {
     useRequestManager: typeof useRequestManager,
@@ -38,6 +39,7 @@ interface DependencyContextType {
     useFetchQuestionnaireTemplate: typeof useFetchQuestionnaireTemplate,
     useFormQuestionnaire: typeof useFormQuestionnaire,
     usePostQuestionnaire: typeof usePostQuestionnaire,
+    useFetchMeans: typeof useFetchMeans,
 }
 
 const initialValue: DependencyContextType = {
@@ -58,6 +60,7 @@ const initialValue: DependencyContextType = {
     useFetchQuestionnaireTemplate: null!,
     useFormQuestionnaire: null!,
     usePostQuestionnaire: null!,
+    useFetchMeans: null!,
 }
 
 const DependencyContext = createContext<DependencyContextType>(initialValue);
@@ -89,6 +92,7 @@ export function DependencyProvider({ children }: DependencyProviderProps) {
         useFetchQuestionnaireTemplate,
         useFormQuestionnaire,
         usePostQuestionnaire,
+        useFetchMeans,
     }
 
     return (

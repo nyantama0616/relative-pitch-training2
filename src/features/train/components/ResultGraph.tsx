@@ -1,11 +1,11 @@
 import { Box, SxProps } from "@mui/material";
 import Chart from "react-apexcharts";
 
-const missRateText = "誤答率(%)";
+const missRateText = "平均ミス回数";
 const averageReactionRateText = "平均反応時間(ms)";
 const intervalText = "音程";
 const goalText = "前回の値";
-const graphTitle = "各音程の誤答率と平均反応時間のグラフ";
+const graphTitle = "平均ミス回数と平均反応時間のグラフ";
 const intervals = ["CD↑", "CE↑", "CF↑", "CG↑", "CA↑", "CB↑", "CB↓", "CA↓", "CG↓", "CF↓", "CE↓", "CD↓"]; //propsはこれに対応している必要がある
 
 const labelSize = "20px";
@@ -20,24 +20,22 @@ interface ResultGraphProps {
 }
 
 export default function ResultGraph({ prevMissRates, prevAverageReactionRates, currentMissRates, currentAverageReactionRates, sx }: ResultGraphProps) {
-    const prevMissRates100 = prevMissRates.map(missRate => missRate * 100); //誤答率をパーセントにする
-    const missRates100 = currentMissRates.map(missRate => missRate * 100); //誤答率をパーセントにする
 
-    const maxMissRate100 = Math.max(Math.max(...missRates100), Math.max(...prevMissRates100)); //誤答率の最大値
+    const maxMissRate = Math.max(Math.max(...currentMissRates), Math.max(...prevMissRates)); //平均ミス回数の最大値
     const maxAverageReactionRate = Math.max(Math.max(...currentAverageReactionRates), Math.max(...prevAverageReactionRates)); //平均反応時間の最大値
 
     const series: ApexAxisChartSeries = [
         {
             name: missRateText,
-            data: missRates100.map((y, i) => {
+            data: currentMissRates.map((y, i) => {
                 return {
                     x: intervals[i],
                     y: y,
                     goals: [
                         {
                             name: goalText,
-                            value: prevMissRates100[i],
-                            strokeWidth: 16,
+                            value: prevMissRates[i],
+                            strokeWidth: 12,
                             strokeHeight: 5,
                             strokeColor: "#ff0000"
                         }
@@ -55,7 +53,7 @@ export default function ResultGraph({ prevMissRates, prevAverageReactionRates, c
                         {
                             name: goalText,
                             value: prevAverageReactionRates[i],
-                            strokeWidth: 16,
+                            strokeWidth: 12,
                             strokeHeight: 5,
                             strokeColor: "#ff0000"
                         }
@@ -92,7 +90,7 @@ export default function ResultGraph({ prevMissRates, prevAverageReactionRates, c
                         fontSize: labelSize,
                     }
                 },
-                max: maxMissRate100,
+                max: maxMissRate,
                 decimalsInFloat: 4
             },
             {
