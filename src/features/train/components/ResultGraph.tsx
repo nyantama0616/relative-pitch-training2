@@ -5,7 +5,8 @@ const missRateText = "平均ミス回数";
 const averageReactionRateText = "平均反応時間(ms)";
 const intervalText = "音程";
 const goalText = "前回の値";
-const graphTitle = "平均ミス回数と平均反応時間のグラフ";
+// const graphTitle = "平均ミス回数と平均反応時間のグラフ";
+const graphTitle = "平均反応時間のグラフ";
 const intervals = ["CD↓", "CE↓", "CF↓", "CG↓", "CA↓", "CB↓", "CD↑", "CE↑", "CF↑", "CG↑", "CA↑", "CB↑"]; //propsはこれに対応している必要がある
 
 const labelSize = "20px";
@@ -35,7 +36,7 @@ export default function ResultGraph({ prevMissRates, prevAverageReactionRates, c
                         {
                             name: goalText,
                             value: prevAverageReactionRates[i],
-                            strokeWidth: 12,
+                            strokeWidth: 24,
                             strokeHeight: 5,
                             strokeColor: "#ff0000"
                         }
@@ -43,24 +44,24 @@ export default function ResultGraph({ prevMissRates, prevAverageReactionRates, c
                 }
             }),
         },
-        {
-            name: missRateText,
-            data: currentMissRates.map((y, i) => {
-                return {
-                    x: intervals[i],
-                    y: y,
-                    goals: [
-                        {
-                            name: goalText,
-                            value: prevMissRates[i],
-                            strokeWidth: 12,
-                            strokeHeight: 5,
-                            strokeColor: "#ff0000"
-                        }
-                    ]
-                }
-            }),
-        },
+        // {
+        //     name: missRateText,
+        //     data: currentMissRates.map((y, i) => {
+        //         return {
+        //             x: intervals[i],
+        //             y: y,
+        //             goals: [
+        //                 {
+        //                     name: goalText,
+        //                     value: prevMissRates[i],
+        //                     strokeWidth: 12,
+        //                     strokeHeight: 5,
+        //                     strokeColor: "#ff0000"
+        //                 }
+        //             ]
+        //         }
+        //     }),
+        // },
     ];
 
     const options: ApexCharts.ApexOptions = { //型大事！プロパティがミスってるとコンパイラがエラー吐いてくれる！
@@ -94,17 +95,17 @@ export default function ResultGraph({ prevMissRates, prevAverageReactionRates, c
 
                 decimalsInFloat: 0
             },
-            {
-                opposite: true,
-                title: {
-                    text: missRateText,
-                    style: {
-                        fontSize: labelSize,
-                    }
-                },
-                max: maxMissRate,
-                decimalsInFloat: 4
-            },
+            // {
+            //     opposite: true,
+            //     title: {
+            //         text: missRateText,
+            //         style: {
+            //             fontSize: labelSize,
+            //         }
+            //     },
+            //     max: maxMissRate,
+            //     decimalsInFloat: 4
+            // },
             
         ],
         dataLabels: {

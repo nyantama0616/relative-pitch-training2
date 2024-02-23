@@ -20,7 +20,8 @@ export default function useMidiIO(): IMidiIO {
 
     //設定用UIができるまでは、ここでデバイスを指定する
     useEffect(() => {
-        const MidiDevice = "Roland A-49";
+        // const MidiDevice = "Roland A-49";
+        const MidiDevice = "LPK25 mk2";
         if (inputDevices.includes(MidiDevice)) {
             setInput(MidiDevice);
             console.log(`Connected to ${MidiDevice} as input`);
@@ -45,11 +46,11 @@ export default function useMidiIO(): IMidiIO {
             
             if (newInput) {
                 newInput.addListener("noteon", e => {
-                    setInputMessage({ type: MessageType.On, note: e.note.number })
+                                        setInputMessage({ type: MessageType.On, note: e.note.number })
                 });
 
                 newInput.addListener("noteoff", e => {
-                    setInputMessage({ type: MessageType.Off, note: e.note.number })
+                                        setInputMessage({ type: MessageType.Off, note: e.note.number })
                 });
             }
 
