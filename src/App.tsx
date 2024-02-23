@@ -28,7 +28,7 @@ function App() {
       <DependencyProvider>
         <AuthProvider>
           <Layout>
-            <Router>
+            <Router basename={process.env.PUBLIC_URL}>
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/test">
