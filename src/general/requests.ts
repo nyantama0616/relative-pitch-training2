@@ -1,4 +1,5 @@
-const baseURL = "http://180.43.174.138:8102";
+// const baseURL = "http://180.43.174.138:8102";
+const baseURL = "http://localhost:8102";
 // const baseURL = "http://localhost:3000";
 
 const requests = {

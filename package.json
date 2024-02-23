@@ -51,6 +51,5 @@
     "@mui/material": "^5.15.0",
     "@mui/system": "^5.15.0",
     "react-router-dom": "^6.21.0"
-  },
-  "homepage": "https://nyantama0616.github.io/relative-pitch-training2/"
+  }
 }
