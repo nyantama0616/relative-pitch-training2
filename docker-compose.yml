@@ -29,28 +29,16 @@ services:
     tty: true
     stdin_open: true
 
-  # front:
-  #   build: .
-  #   environment:
-  #     - NODE_ENV=development
-  #     - PORT=8000
-  #   volumes:
-  #     - ./:/usr/src/app
-  #   ports:
-  #     - 8000:8000
-  #   networks:
-  #     - relative-pitch-training2-network
-  #   tty: true
-  #   command: sh -c 'npm start'
-  deploy:
-    build:
-      context: ./build
+  front:
+    build: .
     volumes:
       - ./:/usr/src/app
-    image: python:3.13.0a4-alpine3.19
     ports:
       - 8100:8000
-    command: sh -c "cd /usr/src/app/build && python -m http.server 8000"
+    networks:
+      - relative-pitch-training2-network
+    tty: true
+    command: sh -c 'cd build && python -m http.server 8000'
 
 volumes:
   bundle-volume:
