@@ -1,21 +1,24 @@
+const baseURL = "http://180.43.174.138:8102";
+// const baseURL = "http://localhost:3000";
+
 const requests = {
-    fetchUsers: "http://localhost:3000/users",
+    fetchUsers: `${baseURL}/users`,
     auth: {
-        signIn: "http://localhost:3000/signin",
+        signIn: `${baseURL}/signin`,
     },
     devs: {
-        ping: "http://localhost:3000/test/ping",
+        ping: `${baseURL}/test/ping`,
     },
-    fetchImage: (imagePath: string) => `http://localhost:3000/images/${imagePath}`,
+    fetchImage: (imagePath: string) => `${baseURL}/images/${imagePath}`,
     trainRecord: {
-        fetchIntervalRates: (id: number) => `http://localhost:3000/interval_rates?id=${id}`,
-        post: "http://localhost:3000/train_records",
-        fetch: (id: number) => `http://localhost:3000/train_records/${id}`,
-        fetchMeans: (id: number) => `http://localhost:3000/train_records/${id}/means`,
+        fetchIntervalRates: (id: number) => `${baseURL}/interval_rates?id=${id}`,
+        post: `${baseURL}/train_records`,
+        fetch: (id: number) => `${baseURL}/train_records/${id}`,
+        fetchMeans: (id: number) => `${baseURL}/train_records/${id}/means`,
     },
     questionnaire: {
-        fetchTemplate: (questionnaireName: string) => `http://localhost:3000/questionnaires/${questionnaireName}`,
-        post: "http://localhost:3000/questionnaires",
+        fetchTemplate: (questionnaireName: string) => `${baseURL}/questionnaires/${questionnaireName}`,
+        post: `${baseURL}/questionnaires`,
     }
 }
 
