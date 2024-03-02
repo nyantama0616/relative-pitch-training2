@@ -7,6 +7,7 @@ import { useAuth } from "../../auth/contexts/AuthContext";
 import IQuestion from "../interfaces/IQuestion";
 import DurationBar from "./DurationBar";
 import SettingsMidi from "../../sounds/components/SettingsMidi";
+import Request from "./Request";
 
 interface TrainPageProps {
     isTest?: boolean;
@@ -58,6 +59,7 @@ export default function TrainPage({ isTest = false, sx }: TrainPageProps) {
                             getPassedTime={hook.dbps.getPassedTime}
                             border={1500}
                         />
+                        <Request status={hook.postTrainRecord.status} downloadURL={hook.postTrainRecord.downloadURL} downloadFileName={hook.postTrainRecord.downloadFileName} />
                     </Box>
                 }
             </Box>
@@ -132,5 +134,6 @@ export function useTrainPage(PRESENT_NUM_PER_NOTE: number) {
             getPassedTime: timer.getPassedTime
         },
         midiIO,
+        postTrainRecord,
     }
 }
