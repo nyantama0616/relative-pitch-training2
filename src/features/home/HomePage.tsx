@@ -13,6 +13,15 @@ export default function HomePage({ sx }: HomePageProps) {
             <Box sx={{ backgroundColor: "#fefefe" }}>
                 <Grid>
                     <Typography variant="h5" textAlign="left">
+                        準備
+                    </Typography>
+
+                    <List>
+                        <Item title="ユーザ選択" to="/users"/>
+                    </List>
+                </Grid>
+                <Grid>
+                    <Typography variant="h5" textAlign="left">
                         アンケート
                     </Typography>
 
@@ -45,8 +54,10 @@ interface ItemProps {
 }
 function Item({ title, to }: ItemProps) {
     return (
-        <ListItemButton>
-            <Link to={to} style={{textDecoration: "none", color: "black"}}>{title}</Link>
-        </ListItemButton>
+        <Link to={to} style={{ textDecoration: "none", color: "black" }}>
+            <ListItemButton>
+                {title}
+            </ListItemButton>
+        </Link>
     )
 }

@@ -13,7 +13,8 @@ export default function HeaderProfile({ sx }: HeaderProfileProps) {
 
     //TODO: 消す
     useEffect(() => {
-        auth.signIn("test@example.com", "pass");
+        // auth.signIn("sister@sample.com", "pass");
+        // auth.signIn("test@example.com", "pass");
     }, []);
 
     const user = auth.currentUser;
