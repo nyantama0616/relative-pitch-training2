@@ -18,6 +18,9 @@ import QuestionnairePage from './features/train/components/QuestionnairePage';
 
 import UserListPage from './features/user/pages/UserListPage';
 
+import TodoListPage1 from './features/home/TodoListPageFrom2To4';
+import TodoListPageFrom2To4 from './features/home/TodoListPageFrom2To4';
+
 import { DependencyProvider } from './general/contexts/DependencyContext';
 import { AuthProvider } from './features/auth/contexts/AuthContext';
 
@@ -57,9 +60,14 @@ function App() {
                 <Route path="questionnaire" element={<QuestionnairePage />} />
               </Route>
 
-              <Route path="users" element={<UserListPage/>}>
+              <Route path="users" element={<UserListPage/>}/>
 
+              <Route path="todo">
+                <Route path="1" element={<TodoListPage1 />} />
+                <Route path="from2to4" element={<TodoListPageFrom2To4 />} />
+                <Route path="5" element={<TodoListPageFrom2To4 />} />
               </Route>
+
             </Routes>
           </Router>
         </AuthProvider>

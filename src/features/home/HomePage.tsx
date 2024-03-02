@@ -43,6 +43,18 @@ export default function HomePage({ sx }: HomePageProps) {
                         <Item title="相対音感トレーニング" to="train/main" />
                     </List>
                 </Grid>
+
+                <Grid>
+                    <Typography variant="h5" textAlign="left">
+                        やることリスト
+                    </Typography>
+
+                    <List>
+                        <Item title="1日目" to="todo/1" />
+                        <Item title="2~4日目" to="todo/from2to4" />
+                        <Item title="5日目" to="todo/5" />
+                    </List>
+                </Grid>
             </Box>
         </PageTemplate>
     )
