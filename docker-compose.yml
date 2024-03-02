@@ -31,6 +31,9 @@ services:
 
   front:
     build: .
+    environment:
+      - NODE_ENV=development
+      - PORT=8000
     volumes:
       - ./:/usr/src/app
     ports:
@@ -38,7 +41,7 @@ services:
     networks:
       - relative-pitch-training2-network
     tty: true
-    command: sh -c 'cd build && python -m http.server 8000'
+    command: sh -c 'npm start'
 
 volumes:
   bundle-volume:

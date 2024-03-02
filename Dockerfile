@@ -1,2 +1,2 @@
-FROM python:3.13.0a4-alpine3.19
+FROM node:20.5.1-alpine
 WORKDIR /usr/src/app
