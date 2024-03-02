@@ -3,11 +3,13 @@ import IFormQuestionnaire, { Answers } from "../interfaces/IFormQuestionnaire";
 import { useDependency } from "../../../general/contexts/DependencyContext";
 import { useAuth } from "../../auth/contexts/AuthContext";
 import { IQuestionnaireItem } from "../interfaces/IQuestionnaire";
+import BasicStatus from "../../../general/types/BasicStatus";
 
 import { useEffect, useState } from "react";
 export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFormQuestionnaire {
     const items = questionnaire.data;
     const [answers, setAnswers] = useState<Answers>({});
+    const [status, setStatus] = useState<BasicStatus>(BasicStatus.Idle);
 
     const { usePostQuestionnaire } = useDependency();
     const postQuestionnaire = usePostQuestionnaire();
@@ -110,11 +112,19 @@ export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFo
         }
 
         console.log(data);
+
+        setStatus(BasicStatus.Doing);
         
         postQuestionnaire.post({
             questionnaireName: questionnaire.questionnaireName,
             data: data,
             userId: currentUser!.id,
+        })
+        .then(res => {
+            setStatus(BasicStatus.Success);
+        })
+        .catch(() => {
+            setStatus(BasicStatus.Failed);
         });
     }
 
@@ -152,6 +162,7 @@ export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFo
     return {
         items,
         answers,
+        status,
         handleChangeItem,
         handleChangeRemarks,
         handleReset,

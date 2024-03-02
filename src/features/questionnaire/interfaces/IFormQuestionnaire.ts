@@ -1,8 +1,9 @@
 import { IQuestionnaireItem } from "./IQuestionnaire";
-
+import BasicStatus from "../../../general/types/BasicStatus";
 export default interface IFormQuestionnaire {
     items: IQuestionnaireItem[];
     answers: Answers;
+    status: BasicStatus;
     handleChangeItem: (itemId: number, value: string) => void;
     handleChangeRemarks: (itemId: number, value: string) => void;
     handleReset: () => void;

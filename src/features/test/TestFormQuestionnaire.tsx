@@ -5,6 +5,7 @@ import { useDependency } from "../../general/contexts/DependencyContext";
 import { useEffect, useState } from "react";
 import IQuestionnaire from "../questionnaire/interfaces/IQuestionnaire";
 import FormQuestionnaire from "../questionnaire/components/FormQuestionnaire";
+import ButtonWithStatus from "../../general/components/ButtonWithStatus";
 
 interface TestQuestionnaireProps {
     questionnaireName: string;
@@ -51,12 +52,16 @@ export default function TestFormQuestionnaire({ questionnaireName, sx }: TestQue
                     hook={formQuestionnaire}
                 />
             }
-            <Button
-                variant="contained"
+
+            <ButtonWithStatus
+                status={formQuestionnaire.status}
                 onClick={formQuestionnaire.handleSubmit}
-            >
-                Submit
-            </Button>
+                sx={{ mt: 2 }}
+                normalText="送信"
+                loadingText="送信中..."
+                errorText="再送"
+                successText="送信済み"
+            />
         </PageTemplate>
     )
 }
