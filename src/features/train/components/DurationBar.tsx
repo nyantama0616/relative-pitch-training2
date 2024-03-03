@@ -48,7 +48,7 @@ export default function DurationBar({ duration, startTime, getPassedTime, border
     useEffect(() => {
         const interval = setInterval(() => {
             forceUpdate({});
-        }, 33);
+        }, 25);
 
         return () => clearInterval(interval);
     }, [])

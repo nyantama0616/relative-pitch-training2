@@ -142,12 +142,15 @@ export default function useTrainManager({ timer, midiIO, PRESENT_NUM_PER_NOTE, o
     }
 
     function _pushKey(note: number): void {
-        setCurrentQuestion({
-            ...currentQuestion!,
-            keyPushes: [...currentQuestion!.keyPushes, {
-                time: timer.getPassedTime(),
-                note: note,
-            }],
+        setCurrentQuestion(prev => {
+            return {
+                interval: { ...prev!.interval },
+                startTime: prev!.startTime,
+                keyPushes: [...prev!.keyPushes, {
+                    time: timer.getPassedTime(),
+                    note: note,
+                }],
+            }
         });
     }
 
@@ -169,7 +172,8 @@ export default function useTrainManager({ timer, midiIO, PRESENT_NUM_PER_NOTE, o
         //ここではintervalだけ更新する
         setCurrentQuestion(prev => {
             return {
-                ...prev!,
+                startTime: prev!.startTime,
+                keyPushes: prev!.keyPushes,
                 interval: nextInterval!,
             }
         });
@@ -184,7 +188,7 @@ export default function useTrainManager({ timer, midiIO, PRESENT_NUM_PER_NOTE, o
 
         setCurrentQuestion(prev => {
             return {
-                ...prev!,
+                interval: { ...prev!.interval },
                 startTime: timer.getPassedTime(),
                 keyPushes: [],
             }   

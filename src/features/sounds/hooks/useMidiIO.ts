@@ -16,6 +16,10 @@ export default function useMidiIO(): IMidiIO {
             .enable()
             .then(onEnabled)
             .catch(err => alert(err));
+        
+        return () => {
+            WebMidi.disable();
+        };
     }, []);
 
     //設定用UIができるまでは、ここでデバイスを指定する
