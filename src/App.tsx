@@ -18,8 +18,9 @@ import QuestionnairePage from './features/train/components/QuestionnairePage';
 
 import UserListPage from './features/user/pages/UserListPage';
 
-import TodoListPage1 from './features/home/TodoListPageFrom2To4';
+import TodoListPage1 from './features/home/TodoListPage1';
 import TodoListPageFrom2To4 from './features/home/TodoListPageFrom2To4';
+import TodoListPage5 from './features/home/TodoListPage5';
 
 import ShimamuraPage from './features/train/components/ShimamuraPage';
 
@@ -68,7 +69,7 @@ function App() {
               <Route path="todo">
                 <Route path="1" element={<TodoListPage1 />} />
                 <Route path="from2to4" element={<TodoListPageFrom2To4 />} />
-                <Route path="5" element={<TodoListPageFrom2To4 />} />
+                <Route path="5" element={<TodoListPage5 />} />
               </Route>
 
             </Routes>
