@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.45bb39be.css",
-    "main.js": "/static/js/main.02d5d4c8.js",
-    "static/js/787.0ddc15b8.chunk.js": "/static/js/787.0ddc15b8.chunk.js",
-    "index.html": "/index.html",
-    "main.45bb39be.css.map": "/static/css/main.45bb39be.css.map",
-    "main.02d5d4c8.js.map": "/static/js/main.02d5d4c8.js.map",
-    "787.0ddc15b8.chunk.js.map": "/static/js/787.0ddc15b8.chunk.js.map"
+    "main.css": "/relative-pitch-training2/static/css/main.45bb39be.css",
+    "main.js": "/relative-pitch-training2/static/js/main.6295acad.js",
+    "static/js/787.0ddc15b8.chunk.js": "/relative-pitch-training2/static/js/787.0ddc15b8.chunk.js",
+    "index.html": "/relative-pitch-training2/index.html",
+    "main.45bb39be.css.map": "/relative-pitch-training2/static/css/main.45bb39be.css.map",
+    "main.6295acad.js.map": "/relative-pitch-training2/static/js/main.6295acad.js.map",
+    "787.0ddc15b8.chunk.js.map": "/relative-pitch-training2/static/js/787.0ddc15b8.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.45bb39be.css",
-    "static/js/main.02d5d4c8.js"
+    "static/js/main.6295acad.js"
   ]
 }
