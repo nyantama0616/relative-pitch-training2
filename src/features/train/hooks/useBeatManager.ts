@@ -4,6 +4,7 @@ import ITrainManager from "../interfaces/ITrainManager";
 import { useDependency } from "../../../general/contexts/DependencyContext";
 import IBeatManager from "../interfaces/IBeatManager";
 import IInterval from "../interfaces/IInterval";
+import Sound from "../../sounds/enums/Sound";
 
 const PLAY_NOTE_INTERVAL = 500;
 
@@ -52,9 +53,9 @@ export default function useBeatManager({ timer, currentInterval, flagPlayNote }:
                 const beatCount = prev.beatCount + 1;
                 if (flagPlayNote) {
                     if (beatCount % 4 === 0) {
-                        soundPlayer.playNote(interval!.note0, PLAY_NOTE_INTERVAL);
+                        soundPlayer.playNote(interval!.note0, PLAY_NOTE_INTERVAL, Sound.Synth);
                     } else if (beatCount % 4 === 1) {
-                        soundPlayer.playNote(interval!.note1, PLAY_NOTE_INTERVAL);
+                        soundPlayer.playNote(interval!.note1, PLAY_NOTE_INTERVAL, Sound.Synth);
                     }
                 }
 

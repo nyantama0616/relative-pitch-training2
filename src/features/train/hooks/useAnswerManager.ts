@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import getNoteName from "../../sounds/lib/getNoteName";
 import IInterval from "../interfaces/IInterval";
 import { useDependency } from "../../../general/contexts/DependencyContext";
+import Sound from "../../sounds/enums/Sound";
 
 interface Props {
     midiIO: IMidiIO;
@@ -34,23 +35,19 @@ export default function useAnswerManager({ midiIO, isAnswerable, currentInterval
         */
         if (midiIO.inputMessage!.type === "On") {
             pushedNotesRef.current.add(note);
-            if (flagPlayNoteOnAnswer) soundPlayer.playNote(note, 500); //TODO: 適切な長さにする
+            if (flagPlayNoteOnAnswer) soundPlayer.playNote(note, 500, Sound.Piano); //TODO: 適切な長さにする
         } else {
             pushedNotesRef.current.delete(note);
         }
-
-        // console.log(pushedNotesRef.current);
         
         if (!isAnswerable || currentInterval === null || pushedNotesRef.current.size !== 2) return;
         
         //正解判定
         //TODO: 1音目がC4であることを正解条件に追加する
         if (pushedNotesRef.current.has(currentInterval.note0) && pushedNotesRef.current.has(currentInterval.note1)) {
-            // console.log("right!");
             onRight(note);
             
         } else {
-            // console.log("wrong!");
             onWrong(note);
         }
     }, [midiIO.inputMessage]);

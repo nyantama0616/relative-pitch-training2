@@ -84,6 +84,7 @@ export default function useTrainManager({ timer, midiIO, PRESENT_NUM_PER_NOTE, o
         midiIO,
         isAnswerable: state.isAnswerable,
         currentInterval: currentQuestion?.interval || null,
+        flagPlayNoteOnAnswer: true,
         onRight: (note: Note) => {
             _pushKey(note);
             _endSet();
@@ -104,8 +105,6 @@ export default function useTrainManager({ timer, midiIO, PRESENT_NUM_PER_NOTE, o
     }, [currentQuestion]);
 
     useEffect(() => {
-        console.log(state.isAnswerable);
-        
         if (beatManager.beatCount % 4 === 1 && !state.isAnswerable) {
             if (state.isWaiting) {
                 // console.log("skip!");
@@ -177,8 +176,6 @@ export default function useTrainManager({ timer, midiIO, PRESENT_NUM_PER_NOTE, o
     }
 
     function _startSet() {
-        // console.log("start, ", getNoteName(currentQuestion!.interval.note1), " ", beatManager.beatCount % 4);
-        
         setState({
             prevScore: null,
             isAnswerable: true,
@@ -199,15 +196,6 @@ export default function useTrainManager({ timer, midiIO, PRESENT_NUM_PER_NOTE, o
         if (beatManager.beatCount % 4 === 0) {
             isWaiting = true;
         }
-        // console.log({
-        //     isWaiting,
-        //     beatCount: beatManager.beatCount,
-        //     frameCount: timer.getFrameCount(),
-        //     passedTime: timer.getPassedTime(),
-        //     interval: currentQuestion!.interval,
-        // });
-
-        // console.log("end", getNoteName(currentQuestion!.interval.note1), " ", beatManager.beatCount % 4);
         
         setState(prev => {
             return {

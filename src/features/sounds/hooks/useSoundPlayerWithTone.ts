@@ -3,6 +3,7 @@ import * as Tone from 'tone';
 import Note from "../enums/Note";
 import { useRef, useEffect } from "react";
 import { IMidiMessage, MessageType } from "../interfaces/IMidiMessage";
+import Sound from "../enums/Sound";
 
 const samplersMap = {
     A0: "A0.mp3",
@@ -38,35 +39,41 @@ const samplersMap = {
 };
 
 export default function useSoundPlayerWithTone(): ISoundPlayer {
-    const synthRef = useRef<Tone.Sampler | null>(null);
+    const pianoRef = useRef<Tone.Sampler | null>(null);
+    const synthRef = useRef<Tone.Synth | null>(null);
 
     useEffect(() => {
         if (synthRef.current === null) {
-            synthRef.current = new Tone.Sampler(
+            pianoRef.current = new Tone.Sampler(
                 samplersMap,
                 _handleLoaded,
                 "https://tonejs.github.io/audio/salamander/"
             ).toDestination();
             const reverb = new Tone.Reverb(10);
-            synthRef.current.chain(reverb, Tone.Destination);
+            pianoRef.current.chain(reverb, Tone.Destination);
+
+            synthRef.current = new Tone.Synth();
+            synthRef.current.toDestination();
+            synthRef.current.oscillator.type = "sine";
         }
     }, []);
 
     //TODO: 音が死ぬことがあるから要修正！！(多分noteがundefinedになってるから。soundPlayer悪くない)
-    function playNote(note: Note, duration: number) {
+    function playNote(note: Note, duration: number, sound: Sound = Sound.Piano) {
         if (note === undefined) {
             console.error("note is undefined.");
-            return;
-        }
-
-        if (!synthRef.current?.loaded) {
-            console.log("not loaded.");
             return;
         }
         
         const freq = Tone.Midi(note).toFrequency();
         const ms = duration / 1000.0;
-        synthRef.current.triggerAttackRelease(freq, ms);
+
+        if (sound === Sound.Piano) {
+            if (!pianoRef.current?.loaded) console.log("not loaded.");
+            pianoRef.current?.triggerAttackRelease(freq, ms);
+        } else {
+            synthRef.current?.triggerAttackRelease(freq, ms);
+        }
     }
 
     function sendMessage(message: IMidiMessage) {
