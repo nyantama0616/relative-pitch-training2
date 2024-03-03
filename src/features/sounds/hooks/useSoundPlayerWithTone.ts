@@ -56,6 +56,11 @@ export default function useSoundPlayerWithTone(): ISoundPlayer {
             synthRef.current.toDestination();
             synthRef.current.oscillator.type = "sine";
         }
+
+        return () => {
+            pianoRef.current?.dispose();
+            synthRef.current?.dispose();
+        };
     }, []);
 
     //TODO: 音が死ぬことがあるから要修正！！(多分noteがundefinedになってるから。soundPlayer悪くない)
