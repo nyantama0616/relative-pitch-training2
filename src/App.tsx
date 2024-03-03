@@ -21,6 +21,8 @@ import UserListPage from './features/user/pages/UserListPage';
 import TodoListPage1 from './features/home/TodoListPageFrom2To4';
 import TodoListPageFrom2To4 from './features/home/TodoListPageFrom2To4';
 
+import ShimamuraPage from './features/train/components/ShimamuraPage';
+
 import { DependencyProvider } from './general/contexts/DependencyContext';
 import { AuthProvider } from './features/auth/contexts/AuthContext';
 
@@ -58,6 +60,7 @@ function App() {
                 <Route path="test" element={<MainPage isTest={true} />} />
                 <Route path="result" element={<ResultPage />} />
                 <Route path="questionnaire" element={<QuestionnairePage />} />
+                <Route path="shimamura" element={<ShimamuraPage />} />
               </Route>
 
               <Route path="users" element={<UserListPage/>}/>

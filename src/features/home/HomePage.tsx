@@ -41,6 +41,7 @@ export default function HomePage({ sx }: HomePageProps) {
                     <List>
                         <Item title="相対音感テスト" to="train/test" />
                         <Item title="相対音感トレーニング" to="train/main" />
+                        <Item title="島村楽器式トレーニング" to="train/shimamura" />
                     </List>
                 </Grid>
 
