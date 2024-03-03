@@ -10,6 +10,7 @@ export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFo
     const items = questionnaire.data;
     const [answers, setAnswers] = useState<Answers>({});
     const [status, setStatus] = useState<BasicStatus>(BasicStatus.Idle);
+    const [submittable, setSubmittable] = useState<boolean>(false);
 
     const { usePostQuestionnaire } = useDependency();
     const postQuestionnaire = usePostQuestionnaire();
@@ -18,6 +19,16 @@ export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFo
     useEffect(() => {
         _initAnswers();
     }, [questionnaire]);
+
+    useEffect(() => {
+        if (items.length === 0) return;
+        
+        if (isFullFilled()) {
+            setSubmittable(true);
+        } else {
+            setSubmittable(false);
+        }
+    }, [answers]);
 
     function handleChangeItem(itemId: number, value: string) {
         console.log(`handleChangeItem(${itemId}, ${value})`);
@@ -151,7 +162,9 @@ export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFo
         let fullFilled = true;
         items.forEach(item => {
             if (item.maxSelectNum == 1) {
-                if (answers[item.id].answer === "") {
+                if (answers[item.id]?.answer === "") {
+                    console.log(`Item ${item.id} is not full filled`);
+                    
                     fullFilled = false;
                 }
             }
@@ -163,6 +176,7 @@ export default function useFormQuestionnaire(questionnaire: IQuestionnaire): IFo
         items,
         answers,
         status,
+        submittable,
         handleChangeItem,
         handleChangeRemarks,
         handleReset,

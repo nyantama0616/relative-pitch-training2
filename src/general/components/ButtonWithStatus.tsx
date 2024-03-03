@@ -13,11 +13,12 @@ interface ButtonWithStatusProps {
     loadingText?: string;
     errorText?: string;
     successText?: string;
+    submittable?: boolean;
 }
 
-function ButtonWithStatus({ status, onClick, sx, normalText, loadingText, errorText, successText }: ButtonWithStatusProps) {
+function ButtonWithStatus({ status, onClick, sx, normalText, loadingText, errorText, successText, submittable=true }: ButtonWithStatusProps) {
     const normalButton = (
-        <Button variant="contained" onClick={onClick} sx={sx}>
+        <Button variant="contained" onClick={onClick} sx={sx} disabled={!submittable}>
             <Typography>
                 {normalText || "normal"}
             </Typography>

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import IQuestionnaire from "../questionnaire/interfaces/IQuestionnaire";
 import FormQuestionnaire from "../questionnaire/components/FormQuestionnaire";
 import ButtonWithStatus from "../../general/components/ButtonWithStatus";
+import { useAuth } from "../../features/auth/contexts/AuthContext";
 
 interface TestQuestionnaireProps {
     questionnaireName: string;
@@ -26,6 +27,8 @@ export default function TestFormQuestionnaire({ questionnaireName, sx }: TestQue
     const [quest, setQuest] = useState<IQuestionnaire>(initialQuestionnaire);
     const formQuestionnaire = useFormQuestionnaire(quest);
 
+    const auth = useAuth();
+
     useEffect(() => {
         fetchQuestionnaireTemplate
             .fetch(questionnaireName)
@@ -42,6 +45,8 @@ export default function TestFormQuestionnaire({ questionnaireName, sx }: TestQue
             .catch((error) => {
                 console.log(error);
             });
+        
+        auth.requireSignIn();
     }, []);
 
     return (
@@ -61,6 +66,7 @@ export default function TestFormQuestionnaire({ questionnaireName, sx }: TestQue
                 loadingText="送信中..."
                 errorText="再送"
                 successText="送信済み"
+                submittable={formQuestionnaire.submittable}
             />
         </PageTemplate>
     )

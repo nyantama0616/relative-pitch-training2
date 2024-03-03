@@ -4,6 +4,7 @@ export default interface IFormQuestionnaire {
     items: IQuestionnaireItem[];
     answers: Answers;
     status: BasicStatus;
+    submittable: boolean;
     handleChangeItem: (itemId: number, value: string) => void;
     handleChangeRemarks: (itemId: number, value: string) => void;
     handleReset: () => void;
