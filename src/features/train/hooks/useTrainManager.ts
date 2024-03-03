@@ -6,7 +6,7 @@ import ITimerManager from "../../../general/interfaces/ITimerManager";
 import Note from "../../sounds/enums/Note";
 import getNoteName from "../../sounds/lib/getNoteName";
 import IMidiIO from "../../sounds/interfaces/IMidiIO";
-import { logDOM } from "@testing-library/react";
+import { useAuth } from "../../auth/contexts/AuthContext";
 
 const mockQuestion: IQuestion = {
     interval: {
@@ -93,6 +93,12 @@ export default function useTrainManager({ timer, midiIO, PRESENT_NUM_PER_NOTE, o
             _pushKey(note);
         },
     });
+
+    const { requireSignIn } = useAuth();
+
+    useEffect(() => {
+        requireSignIn();
+    }, []);
 
     //確実にkeyPushesが更新されるようにするため
     useEffect(() => {

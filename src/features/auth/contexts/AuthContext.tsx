@@ -6,11 +6,13 @@ import { useDependency } from '../../../general/contexts/DependencyContext';
 interface AuthContextType {
     currentUser: IUser | null,
     signIn: (email: string, password: string) => Promise<boolean>,
+    requireSignIn: () => void,
 }
 
 const initialValue: AuthContextType = {
     currentUser: null,
     signIn: null!,
+    requireSignIn: null!,
 }
 
 const AuthContext = createContext<AuthContextType>(initialValue);
@@ -41,9 +43,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
         });
     }
 
+    function requireSignIn() {
+        if (currentUser) return;
+        
+        window.alert("ユーサが選択されていません。");
+
+        if (window.location.pathname !== "/users") {
+            window.location.href = "/users";
+        }
+    }
+
     const value: AuthContextType = {
         currentUser: currentUser,
         signIn: signIn,
+        requireSignIn: requireSignIn,
     }
 
     return (
